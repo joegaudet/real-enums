@@ -1,0 +1,30 @@
+{
+  "name": "real-enums",
+  "version": "1.0.0",
+  "description": "Simple library for having useful enums",
+  "keywords": [
+    "enum"
+  ],
+  "homepage": "https://github.com/joegaudet/real-enums#readme",
+  "bugs": {
+    "url": "https://github.com/joegaudet/real-enums/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/joegaudet/real-enums.git"
+  },
+  "license": "MIT",
+  "author": "Joe Gaudet joe@joegaudet.com",
+  "type": "commonjs",
+  "main": "index.js",
+  "scripts": {
+    "test": "vitest"
+  },
+  "devDependencies": {
+    "typescript": "^5.8.3",
+    "vitest": "^3.1.3"
+  },
+  "dependencies": {
+    "inflection": "^3.0.2"
+  }
+}
