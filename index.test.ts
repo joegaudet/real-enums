@@ -65,7 +65,7 @@ test('enums can be used as keys in maps', () => {
     expect(TestEnum.TestB.icon).toBe('b');
 })
 
-test('enums can be used as collecitons for inlcudes', () => {
+test('enums can be used as collections for includes', () => {
     expect(TestEnum.TestA.isReallyA).toBe(true);
     expect(TestEnum.TestB.isReallyA).toBe(false);
 })

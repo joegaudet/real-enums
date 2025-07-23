@@ -15,7 +15,7 @@
   },
   "license": "MIT",
   "author": "Joe Gaudet joe@joegaudet.com",
-  "type": "commonjs",
+  "type": "module",
   "main": "index.js",
   "scripts": {
     "test": "vitest"

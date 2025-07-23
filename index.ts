@@ -1,4 +1,4 @@
-import { capitalize } from "inflection";
+import { capitalize } from 'inflection';
 
 export class Enum extends String {
     value: string;
