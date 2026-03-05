@@ -5,11 +5,11 @@ class TestEnum extends Enum {
     static TestA = new TestEnum('test-a');
     static TestB = new TestEnum('test-b');
 
-    @is() declare isTestA: boolean;
-    @isNot() declare isNotTestA: boolean;
+    @is() accessor isTestA!: boolean;
+    @isNot() accessor isNotTestA!: boolean;
 
-    @is() declare isTestB: boolean;
-    @isNot() declare isNotTestB: boolean;
+    @is() accessor isTestB!: boolean;
+    @isNot() accessor isNotTestB!: boolean;
 
     // An example of using a map
     get icon() {
