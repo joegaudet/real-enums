@@ -42,36 +42,44 @@ export class Enum extends String {
  * class Enum {
  *   static SomeType = new Enum('some_type');
  *
- *   @is isSomeType;
+ *   @is() accessor isSomeType: boolean;
  * }
  */
 export function is() {
-    return (target: any, key: string) => {
-        Object.defineProperty(target, key, {
+    return function <This extends Enum>(
+        target: ClassAccessorDecoratorTarget<This, boolean>,
+        context: ClassAccessorDecoratorContext<This, boolean>
+    ): ClassAccessorDecoratorResult<This, boolean> {
+        return {
             get() {
-                return this === target.constructor[key.slice(2)];
+                const key = (context.name as string).slice(2);
+                return this === (this.constructor as any)[key];
             },
-        });
+        };
     };
 }
 
 /**
- * Decorator for enums that lets you make is attributes that reflec what state they are in.
+ * Decorator for enums that lets you make isNot attributes that reflect what state they are in.
  *
  * usage
  *
  * class Enum {
  *   static SomeType = new Enum('some_type');
  *
- *   @is isSomeType;
+ *   @isNot() accessor isNotSomeType: boolean;
  * }
  */
 export function isNot() {
-    return (target: any, key: string) => {
-        Object.defineProperty(target, key, {
+    return function <This extends Enum>(
+        target: ClassAccessorDecoratorTarget<This, boolean>,
+        context: ClassAccessorDecoratorContext<This, boolean>
+    ): ClassAccessorDecoratorResult<This, boolean> {
+        return {
             get() {
-                return this !== target.constructor[key.slice(5)];
-            }
-        });
+                const key = (context.name as string).slice(5);
+                return this !== (this.constructor as any)[key];
+            },
+        };
     };
 }
