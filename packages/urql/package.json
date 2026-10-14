@@ -1,0 +1,57 @@
+{
+  "name": "@real-enums/urql",
+  "version": "1.2.0",
+  "description": "real-enums for urql Graphcache: a resolver that reads enums out of the cache.",
+  "keywords": [
+    "urql",
+    "graphcache",
+    "graphql",
+    "enum"
+  ],
+  "license": "MIT",
+  "author": "Joe Gaudet joe@joegaudet.com",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/joegaudet/real-enums.git",
+    "directory": "packages/urql"
+  },
+  "homepage": "https://joegaudet.com/real-enums/",
+  "bugs": "https://github.com/joegaudet/real-enums/issues",
+  "type": "module",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    },
+    "./package.json": "./package.json"
+  },
+  "files": [
+    "dist",
+    "CHANGELOG.md",
+    "README.md",
+    "LICENSE"
+  ],
+  "sideEffects": false,
+  "scripts": {
+    "build": "tsup",
+    "test": "vitest run"
+  },
+  "peerDependencies": {
+    "real-enums": "workspace:^",
+    "@urql/exchange-graphcache": "^9.0.0"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "devDependencies": {
+    "real-enums": "workspace:^",
+    "@urql/exchange-graphcache": "^9.0.2",
+    "@urql/core": "^6.0.3",
+    "graphql": "^16.14.2",
+    "wonka": "^6.3.5"
+  },
+  "engines": {
+    "node": ">=22.12.0"
+  }
+}

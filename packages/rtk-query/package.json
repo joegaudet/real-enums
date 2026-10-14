@@ -1,0 +1,53 @@
+{
+  "name": "@real-enums/rtk-query",
+  "version": "1.2.0",
+  "description": "real-enums for RTK Query: transformResponse and a serializable check that accepts enums.",
+  "keywords": [
+    "redux",
+    "rtk-query",
+    "enum"
+  ],
+  "license": "MIT",
+  "author": "Joe Gaudet joe@joegaudet.com",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/joegaudet/real-enums.git",
+    "directory": "packages/rtk-query"
+  },
+  "homepage": "https://joegaudet.com/real-enums/",
+  "bugs": "https://github.com/joegaudet/real-enums/issues",
+  "type": "module",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    },
+    "./package.json": "./package.json"
+  },
+  "files": [
+    "dist",
+    "CHANGELOG.md",
+    "README.md",
+    "LICENSE"
+  ],
+  "sideEffects": false,
+  "scripts": {
+    "build": "tsup",
+    "test": "vitest run"
+  },
+  "peerDependencies": {
+    "real-enums": "workspace:^",
+    "@reduxjs/toolkit": "^2.0.0"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "devDependencies": {
+    "real-enums": "workspace:^",
+    "@reduxjs/toolkit": "^2.13.0"
+  },
+  "engines": {
+    "node": ">=22.12.0"
+  }
+}

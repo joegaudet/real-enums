@@ -1,112 +1,26 @@
 # real-enums
 
-Simple Library for having enums that are actual classes and provide encapsulation of properties like icons / labels etc
-for collections of enumerated values.
+Enums that are real classes: a label, an icon, a CSS class or "what comes next" lives on the
+value, not in an `if`/`else` ladder in every template that shows it. With adapters that turn
+the strings your API sends into enum instances, for Ember (WarpDrive and ember-data) and for
+React's data libraries.
 
-## Why does this exist
+**Site, docs and live examples: https://joegaudet.com/real-enums/**
 
-Well mostly for fun, but also to address the false polymorphism that is rampant in front end codebases. It's common to
-see the following:
+| Package                                                 | For                                                             |
+| ------------------------------------------------------- | --------------------------------------------------------------- |
+| [`real-enums`](packages/real-enums)                     | The `Enum` class, `@is()`, codecs, `mapFields`, Standard Schema |
+| [`@real-enums/warp-drive`](packages/warp-drive)         | WarpDrive schema records and ember-data Models                  |
+| [`@real-enums/tanstack-query`](packages/tanstack-query) | TanStack Query `select`                                         |
+| [`@real-enums/swr`](packages/swr)                       | SWR fetchers                                                    |
+| [`@real-enums/rtk-query`](packages/rtk-query)           | RTK Query `transformResponse` and the serializable check        |
+| [`@real-enums/apollo`](packages/apollo)                 | Apollo Client field policies                                    |
+| [`@real-enums/urql`](packages/urql)                     | urql Graphcache resolvers                                       |
 
-```handlebars
-{{#if (eq order.state 'open')}}
-    Open
-{{else if (eq order.state 'closed')}}
-    Closed
-{{/if}}
-```
+Runnable apps, one per data layer, are in [`examples/`](examples).
 
-Which instead can simply be something like the following:
+Contributing: [CONTRIBUTING.md](CONTRIBUTING.md).
 
-```handlebars
+## License
 
-<div class="{{order.state.className}}"/>
-{{order.state.label}}
-</div>
-```
-
-It can be particularly useful when making dropdowns etc
-
-```handlebars
-<select>
-    {{#each OrderStates.values do |orderState|}}
-        <option value="{{orderState.id}}">{{orderState.label}}</option>
-    {{/each}}
-</select>
-```
-
-# How to use it?
-
-Install through npm
-
-```
-npm install --save real-enums
-```
-
-Simply import Enum, is, isNot and do the following:
-
-```typescript
-class TestEnum extends Enum {
-    static TestA = new TestEnum('test-a');
-    static TestB = new TestEnum('test-b');
-
-    @is() declare isTestA: boolean;
-    @isNot() declare isNotTestA: boolean;
-
-    @is() declare isTestB: boolean;
-    @isNot() declare isNotTestB: boolean;
-
-    // An example of using a map
-    get icon() {
-        return {
-            [TestEnum.TestA.value]: 'a',
-            [TestEnum.TestB.value]: 'b'
-        }[this.value];
-    }
-
-    // An example of using a colleciton
-    get isReallyA() {
-        return [TestEnum.TestA].includes(this)
-    }
-}
-```
-
-Caveat the is / isNot decorators are a bit of a trick and require property names to be exactly is<Name> isNot<Name>
-
-## Ember.js
-
-It was originally designed for the ember js data layer to allow back end enumerations such a something super common like
-order
-state to be transmitted to the front end as a string, below is a example transform.
-
-```JavaScript
-
-@classic
-export default class AbstractEnumTransform extends Transform {
-    enumClass;
-
-    deserialize(serialized, { isArray = false } = {}) {
-        // Convert arrays of values to arrays of enums
-        if (isArray) {
-            return serialized.map((serializedItem) =>
-                this.enumClass.valueFor(serializedItem)
-            );
-        }
-
-        // Otherwise, return a single enum
-        return this.enumClass.valueFor(serialized);
-    }
-
-    serialize(deserialized, { isArray = false } = {}) {
-        // Convert arrays of enums to arrays of values
-        if (isArray) {
-            return deserialized.map(
-                (deserializedItem) => deserializedItem?.valueOf() ?? null
-            );
-        }
-
-        // Otherwise, return a single value
-        return deserialized?.valueOf() ?? null;
-    }
-}
-```
+MIT

@@ -1,0 +1,49 @@
+{
+  "name": "real-enums",
+  "version": "1.2.0",
+  "description": "Enums that are real classes: labels, icons and predicates live on the value, not in a template.",
+  "keywords": [
+    "enum",
+    "ember",
+    "ember-data",
+    "warp-drive",
+    "react",
+    "tanstack-query",
+    "standard-schema"
+  ],
+  "license": "MIT",
+  "author": "Joe Gaudet joe@joegaudet.com",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/joegaudet/real-enums.git",
+    "directory": "packages/real-enums"
+  },
+  "homepage": "https://joegaudet.com/real-enums/",
+  "bugs": "https://github.com/joegaudet/real-enums/issues",
+  "type": "module",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    },
+    "./package.json": "./package.json"
+  },
+  "files": [
+    "dist",
+    "CHANGELOG.md",
+    "README.md",
+    "LICENSE"
+  ],
+  "sideEffects": false,
+  "scripts": {
+    "build": "tsup",
+    "test": "vitest run"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "engines": {
+    "node": ">=22.12.0"
+  }
+}

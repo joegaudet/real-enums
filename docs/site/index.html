@@ -1,0 +1,709 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>real-enums</title>
+    <meta
+      name="description"
+      content="Enums that are real classes, for TypeScript. Labels, CSS classes and transitions live on the value. Adapters for WarpDrive, ember-data, TanStack Query, SWR, RTK Query, Apollo and urql."
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/@picocss/pico@2.0.6/css/pico.min.css"
+    />
+    <!-- Code blocks are dark in both schemes, like an editor, so one theme. -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css"
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;800&display=swap"
+    />
+    <link rel="stylesheet" href="site.css" />
+    <link rel="icon" href="favicon.svg" type="image/svg+xml" />
+  </head>
+  <body>
+    <nav class="site-nav">
+      <div class="container">
+        <ul>
+          <li class="brand">
+            <img src="logo.svg" alt="" width="28" height="28" /><strong>real-enums</strong>
+          </li>
+        </ul>
+        <ul>
+          <li class="wide-only"><a href="#why">Why</a></li>
+          <li><a href="#ember">Ember</a></li>
+          <li><a href="#react">React</a></li>
+          <li class="wide-only"><a href="#examples">Examples</a></li>
+          <li><a href="https://github.com/joegaudet/real-enums">GitHub</a></li>
+        </ul>
+      </div>
+    </nav>
+
+    <header class="hero-band">
+      <div class="container hero">
+        <div class="hero-copy">
+          <p class="eyebrow">Enums for TypeScript, Ember and React</p>
+          <h1>
+            Your API sends strings. Your UI gets
+            <span class="gradient-text">real enums</span>.
+          </h1>
+          <p class="hero-sub">
+            Enums that are classes: the label, the badge colour and what comes next live on the
+            value, not in an <code>if</code> ladder in every template. Adapters turn the strings
+            your server sends into enum instances, for WarpDrive and ember-data, TanStack Query,
+            SWR, RTK Query, Apollo and urql, and back into strings on the way out.
+          </p>
+          <div class="hero-actions">
+            <a href="#install" role="button">Get started</a>
+            <a href="https://github.com/joegaudet/real-enums" role="button" class="ghost">
+              <svg viewBox="0 0 16 16" width="16" height="16" aria-hidden="true" focusable="false">
+                <path
+                  fill="currentColor"
+                  d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"
+                />
+              </svg>
+              GitHub
+            </a>
+          </div>
+          <div class="install">
+            <span class="prompt" aria-hidden="true">$</span>
+            <code>npm i real-enums</code>
+          </div>
+          <p class="install-note">Then add the adapter for your data layer, if you have one.</p>
+        </div>
+
+        <svg
+          class="hero-art"
+          viewBox="0 0 720 470"
+          role="img"
+          aria-labelledby="hero-art-title"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <title id="hero-art-title">
+            Raw strings from the server become OrderState instances, through an adapter for each
+            data layer, and render as a labelled badge with the next action.
+          </title>
+          <defs>
+            <radialGradient id="hero-glow">
+              <stop offset="0" stop-color="#0d9488" stop-opacity="0.35" />
+              <stop offset="1" stop-color="#0d9488" stop-opacity="0" />
+            </radialGradient>
+            <linearGradient id="card-stroke" x1="0" y1="0" x2="1" y2="1">
+              <stop offset="0" stop-color="#2dd4bf" />
+              <stop offset="1" stop-color="#0d9488" stop-opacity="0.4" />
+            </linearGradient>
+            <filter id="card-blur" x="-50%" y="-50%" width="200%" height="200%">
+              <feGaussianBlur stdDeviation="18" />
+            </filter>
+            <path id="rope-0" pathLength="100" d="M150 175 C185 175 185 235 220 235" />
+            <path id="rope-1" pathLength="100" d="M150 235 L220 235" />
+            <path id="rope-2" pathLength="100" d="M150 295 C185 295 185 235 220 235" />
+            <path id="rope-3" pathLength="100" d="M500 235 C535 235 535 85 570 85" />
+            <path id="rope-4" pathLength="100" d="M500 235 C535 235 535 130 570 130" />
+            <path id="rope-5" pathLength="100" d="M500 235 C535 235 535 175 570 175" />
+            <path id="rope-6" pathLength="100" d="M500 235 C535 235 535 220 570 220" />
+            <path id="rope-7" pathLength="100" d="M500 235 C535 235 535 265 570 265" />
+            <path id="rope-8" pathLength="100" d="M500 235 C535 235 535 310 570 310" />
+            <path id="rope-9" pathLength="100" d="M500 235 C535 235 535 355 570 355" />
+            <path id="rope-10" pathLength="100" d="M360 350 L360 396" />
+          </defs>
+
+          <ellipse cx="360" cy="235" rx="330" ry="230" fill="url(#hero-glow)" />
+
+          <g class="ropes">
+            <use href="#rope-0" />
+            <use href="#rope-1" />
+            <use href="#rope-2" />
+            <use href="#rope-3" />
+            <use href="#rope-4" />
+            <use href="#rope-5" />
+            <use href="#rope-6" />
+            <use href="#rope-7" />
+            <use href="#rope-8" />
+            <use href="#rope-9" />
+            <use href="#rope-10" />
+          </g>
+          <g class="pulses">
+            <use href="#rope-0" style="--i: 0" />
+            <use href="#rope-1" style="--i: 1" />
+            <use href="#rope-2" style="--i: 2" />
+            <use href="#rope-3" style="--i: 3" />
+            <use href="#rope-4" style="--i: 4" />
+            <use href="#rope-5" style="--i: 5" />
+            <use href="#rope-6" style="--i: 6" />
+            <use href="#rope-7" style="--i: 7" />
+            <use href="#rope-8" style="--i: 8" />
+            <use href="#rope-9" style="--i: 9" />
+            <use href="#rope-10" style="--i: 10" />
+          </g>
+
+          <g class="groups">
+            <text x="20" y="140">On the wire</text>
+            <text x="570" y="55">Your data layer</text>
+          </g>
+
+          <g class="wire">
+            <rect x="20" y="160" width="130" height="30" rx="15" />
+            <rect x="20" y="220" width="130" height="30" rx="15" />
+            <rect x="20" y="280" width="130" height="30" rx="15" />
+            <text x="85" y="180">"pending"</text>
+            <text x="85" y="240">"shipped"</text>
+            <text x="85" y="300">"delivered"</text>
+          </g>
+
+          <g class="nodes">
+            <rect x="570" y="70" width="130" height="30" rx="8" />
+            <rect x="570" y="115" width="130" height="30" rx="8" />
+            <rect x="570" y="160" width="130" height="30" rx="8" />
+            <rect x="570" y="205" width="130" height="30" rx="8" />
+            <rect x="570" y="250" width="130" height="30" rx="8" />
+            <rect x="570" y="295" width="130" height="30" rx="8" />
+            <rect x="570" y="340" width="130" height="30" rx="8" />
+          </g>
+          <g class="labels">
+            <text x="584" y="90">WarpDrive</text>
+            <text x="584" y="135">ember-data</text>
+            <text x="584" y="180">TanStack Query</text>
+            <text x="584" y="225">SWR</text>
+            <text x="584" y="270">RTK Query</text>
+            <text x="584" y="315">Apollo Client</text>
+            <text x="584" y="360">urql</text>
+          </g>
+
+          <g class="card">
+            <rect class="card-glow" x="240" y="140" width="240" height="190" rx="16" />
+            <rect class="card-body" x="220" y="120" width="280" height="230" rx="14" />
+            <circle cx="240" cy="140" r="4" />
+            <circle cx="254" cy="140" r="4" />
+            <circle cx="268" cy="140" r="4" />
+            <text x="236" y="178">
+              <tspan class="kw">class</tspan>
+              OrderState
+              <tspan class="kw">extends</tspan>
+              Enum {
+            </text>
+            <text x="254" y="202">
+              <tspan class="kw">static</tspan>
+              Pending
+              <tspan class="muted">= …</tspan>
+            </text>
+            <text x="254" y="226">
+              <tspan class="kw">static</tspan>
+              Shipped
+              <tspan class="muted">= …</tspan>
+            </text>
+            <text x="254" y="250">
+              <tspan class="kw">static</tspan>
+              Delivered
+              <tspan class="muted">= …</tspan>
+            </text>
+            <text x="254" y="280">
+              <tspan class="kw">get</tspan>
+              <tspan class="fn">next</tspan>
+              ()
+              <tspan class="muted">{ … }</tspan>
+            </text>
+            <text x="254" y="304">
+              <tspan class="kw">get</tspan>
+              <tspan class="fn">className</tspan>
+              ()
+              <tspan class="muted">{ … }</tspan>
+            </text>
+            <text x="236" y="328">}</text>
+          </g>
+
+          <g class="ui">
+            <text class="group" x="360" y="455">Your template</text>
+            <rect class="badge" x="276" y="396" width="86" height="30" rx="15" />
+            <text class="badge-text" x="319" y="416">Shipped</text>
+            <rect class="button" x="372" y="396" width="74" height="30" rx="8" />
+            <text class="button-text" x="409" y="416">Deliver</text>
+          </g>
+        </svg>
+      </div>
+    </header>
+
+    <main class="container">
+      <section id="why">
+        <p class="eyebrow">Why</p>
+        <h2>Ask the value, not the template</h2>
+        <p>
+          A status that arrives as a string gets the same <code>if</code> ladder in every template
+          that shows it, and each copy drifts. Put the answers on the value once, and every template
+          asks it instead.
+        </p>
+        <div class="grid">
+          <article>
+            <header>Before: the ladder, everywhere the state appears</header>
+            <pre><code class="language-handlebars">{{#if (eq order.state "pending")}}
+  &lt;span class="amber"&gt;Pending&lt;/span&gt;
+  &lt;button&gt;Ship&lt;/button&gt;
+{{else if (eq order.state "shipped")}}
+  &lt;span class="blue"&gt;Shipped&lt;/span&gt;
+  &lt;button&gt;Deliver&lt;/button&gt;
+{{else if (eq order.state "delivered")}}
+  &lt;span class="green"&gt;Delivered&lt;/span&gt;
+{{/if}}</code></pre>
+          </article>
+          <article>
+            <header>After: one line, whatever the state</header>
+            <pre><code class="language-handlebars">&lt;span class={{order.state.className}}&gt;
+  {{order.state.label}}
+&lt;/span&gt;
+{{#if order.state.advanceLabel}}
+  &lt;button&gt;{{order.state.advanceLabel}}&lt;/button&gt;
+{{/if}}</code></pre>
+            <p>And the dropdown builds itself:</p>
+            <pre><code class="language-handlebars">{{#each OrderState.values as |state|}}
+  &lt;option value={{state.value}}&gt;{{state.label}}&lt;/option&gt;
+{{/each}}</code></pre>
+          </article>
+        </div>
+
+        <div class="features">
+          <article>
+            <svg class="icon" viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M4 7h16M4 12h10M4 17h6" />
+            </svg>
+            <h3>Behaviour on the value</h3>
+            <p>Labels, classes, icons and transitions are getters. Add a state in one place.</p>
+          </article>
+          <article>
+            <svg class="icon" viewBox="0 0 24 24" aria-hidden="true">
+              <circle cx="12" cy="12" r="8" />
+              <path d="M8.5 12l2.5 2.5 4.5-5" />
+            </svg>
+            <h3>Singletons</h3>
+            <p>
+              <code>===</code> works, and caches keep references stable when a refetch returns the
+              same payload.
+            </p>
+          </article>
+          <article>
+            <svg class="icon" viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M4 12h16M14 6l6 6-6 6" />
+            </svg>
+            <h3>Strings on the wire</h3>
+            <p>
+              Instances extend <code>String</code>, so <code>JSON.stringify</code> sends the raw
+              value. The TanStack, Apollo, urql and WarpDrive schema-record adapters keep their
+              caches plain JSON.
+            </p>
+          </article>
+          <article>
+            <svg class="icon" viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M12 3l8 4v5c0 4.5-3.4 8.3-8 9-4.6-.7-8-4.5-8-9V7z" />
+            </svg>
+            <h3>Lenient, or strict</h3>
+            <p>
+              A state the client doesn't know yet reads <code>undefined</code>, not a crash. Ask for
+              strict with a Standard Schema validator.
+            </p>
+          </article>
+        </div>
+      </section>
+
+      <section id="install">
+        <p class="eyebrow">Define one</p>
+        <h2>An enum is a class with static members</h2>
+        <p>
+          Each value is a static instance. Everything else is an ordinary getter, so it can be as
+          rich as the domain needs.
+        </p>
+        <pre><code class="language-typescript">import { Enum, is, isNot } from 'real-enums'
+
+export class OrderState extends Enum {
+  static Pending = new OrderState('pending')
+  static Shipped = new OrderState('shipped')
+  static Delivered = new OrderState('delivered')
+  static Cancelled = new OrderState('cancelled')
+
+  @is() accessor isPending!: boolean
+  @is() accessor isCancelled!: boolean
+  @isNot() accessor isNotCancelled!: boolean
+
+  get next(): OrderState | undefined {
+    return {
+      [OrderState.Pending.value]: OrderState.Shipped,
+      [OrderState.Shipped.value]: OrderState.Delivered,
+    }[this.value]
+  }
+
+  get advanceLabel(): string | undefined {
+    return {
+      [OrderState.Pending.value]: 'Ship',
+      [OrderState.Shipped.value]: 'Deliver',
+    }[this.value]
+  }
+
+  get className() {
+    return `badge badge--${this.value}`
+  }
+}
+
+OrderState.valueFor('shipped') // OrderState.Shipped
+OrderState.values // [Pending, Shipped, Delivered, Cancelled]
+OrderState.Shipped.label // 'Shipped'
+JSON.stringify({ state: OrderState.Shipped }) // '{"state":"shipped"}'</code></pre>
+        <p>
+          <code>@is()</code> and <code>@isNot()</code> are named after the static member they test.
+          Lookups like <code>next</code> are tables keyed by <code>value</code>, so adding a state
+          is one line per table. In Ember, where decorators are compiled with legacy semantics,
+          write <code>@is() declare isPending: boolean</code>; Vite 8 leaves decorators alone, so a
+          React app on Vite adds a small transform (the examples show one).
+        </p>
+      </section>
+
+      <section id="ember">
+        <p class="eyebrow">Ember</p>
+        <h2>WarpDrive and ember-data</h2>
+        <p>
+          <code>@real-enums/warp-drive</code> has a Transformation for schema records and a
+          transform for <code>@attr</code> on Models. Both turn the cached string into an enum on
+          read and back into the string on save. Works with WarpDrive 5.8 and later, in Vite and
+          classic builds alike.
+        </p>
+        <div class="install-block">
+          <pre><code class="language-bash">npm i real-enums @real-enums/warp-drive</code></pre>
+        </div>
+        <div class="use-cases">
+          <article>
+            <header>Schema records</header>
+            <pre><code class="language-typescript">// app/services/store.ts
+import { useRecommendedStore } from '@warp-drive/core'
+import { JSONAPICache } from '@warp-drive/json-api'
+import { enumTransformation } from '@real-enums/warp-drive'
+
+export default useRecommendedStore({
+  cache: JSONAPICache,
+  schemas: [OrderSchema],
+  transformations: [enumTransformation(OrderState, 'order-state')],
+})
+
+// app/schemas/order.ts
+export const OrderSchema = withDefaults({
+  type: 'order',
+  fields: [
+    { kind: 'field', name: 'customer' },
+    { kind: 'field', name: 'state', type: 'order-state' },
+  ],
+})</code></pre>
+          </article>
+          <article>
+            <header>Legacy Models</header>
+            <pre><code class="language-typescript">// app/transforms/order-state.ts
+import { enumTransform } from '@real-enums/warp-drive'
+export default enumTransform(OrderState)
+
+// app/models/order.ts
+import Model, { attr } from '@warp-drive/legacy/model'
+
+export default class Order extends Model {
+  @attr declare customer: string
+  @attr('order-state') declare state: OrderState
+}</code></pre>
+            <p>
+              <small
+                >Legacy transforms run in the serializer, so load through an adapter or
+                <code>store.pushPayload</code>; a raw <code>store.push</code> skips it.</small
+              >
+            </p>
+          </article>
+        </div>
+        <h3>In a component</h3>
+        <pre><code class="language-handlebars">import { OrderState } from 'my-app/enums/order-state';
+
+&lt;template&gt;
+  &lt;select {{on "change" @onFilter}}&gt;
+    &lt;option value=""&gt;All&lt;/option&gt;
+    {{#each OrderState.values as |state|}}
+      &lt;option value={{state.value}}&gt;{{state.label}}&lt;/option&gt;
+    {{/each}}
+  &lt;/select&gt;
+
+  {{#each @orders as |order|}}
+    &lt;li class={{if order.state.isCancelled "muted"}}&gt;
+      &lt;span class={{order.state.className}}&gt;{{order.state.label}}&lt;/span&gt;
+    &lt;/li&gt;
+  {{/each}}
+&lt;/template&gt;</code></pre>
+      </section>
+
+      <section id="react">
+        <p class="eyebrow">React</p>
+        <h2>Whatever fetches your data</h2>
+        <p>
+          Each adapter is a few lines over one shared mapper, tested against the real library: a
+          real <code>QueryClient</code>, a real Redux store, a real <code>InMemoryCache</code>, a
+          real Graphcache.
+        </p>
+
+        <details open>
+          <summary>TanStack Query</summary>
+          <pre><code class="language-bash">npm i real-enums @real-enums/tanstack-query</code></pre>
+          <pre><code class="language-tsx">import { enumSelect } from '@real-enums/tanstack-query'
+
+// Outside the component, so it isn't re-run every render.
+const selectOrders = enumSelect&lt;Order[]&gt;({ state: OrderState, 'lines.status': LineStatus })
+
+const { data } = useQuery({ queryKey: ['orders'], queryFn: fetchOrders, select: selectOrders })</code></pre>
+          <p>
+            Mapping happens in <code>select</code>, so the cache, <code>dehydrate</code> and
+            persisters keep plain JSON, and structural sharing keeps the result stable across
+            identical refetches.
+          </p>
+        </details>
+
+        <details>
+          <summary>SWR</summary>
+          <pre><code class="language-bash">npm i real-enums @real-enums/swr</code></pre>
+          <pre><code class="language-tsx">import { withEnums } from '@real-enums/swr'
+
+const fetchOrders = withEnums&lt;Order[]&gt;(fetchJson, { state: OrderState })
+
+const { data } = useSWR('/api/orders', fetchOrders) // data: Order[] | undefined</code></pre>
+        </details>
+
+        <details>
+          <summary>RTK Query</summary>
+          <pre><code class="language-bash">npm i real-enums @real-enums/rtk-query</code></pre>
+          <pre><code class="language-tsx">import { enumResponse, isSerializable } from '@real-enums/rtk-query'
+
+const api = createApi({
+  baseQuery: fetchBaseQuery({ baseUrl: '/api' }),
+  endpoints: build =&gt; ({
+    orders: build.query&lt;Order[], void&gt;({
+      query: () =&gt; '/orders',
+      transformResponse: enumResponse&lt;Order[]&gt;({ state: OrderState }),
+    }),
+  }),
+})
+
+const store = configureStore({
+  reducer: { [api.reducerPath]: api.reducer },
+  // Without this, the dev-mode check reports every enum as non-serializable.
+  middleware: getDefault =&gt;
+    getDefault({ serializableCheck: { isSerializable } }).concat(api.middleware),
+})</code></pre>
+        </details>
+
+        <details>
+          <summary>Apollo Client</summary>
+          <pre><code class="language-bash">npm i real-enums @real-enums/apollo</code></pre>
+          <pre><code class="language-tsx">import { enumField } from '@real-enums/apollo'
+
+const cache = new InMemoryCache({
+  typePolicies: { Order: { fields: { state: enumField(OrderState) } } },
+})</code></pre>
+          <p>
+            Reads return enums; the normalized cache keeps the raw strings, however they were
+            written.
+          </p>
+        </details>
+
+        <details>
+          <summary>urql (Graphcache)</summary>
+          <pre><code class="language-bash">npm i real-enums @real-enums/urql</code></pre>
+          <pre><code class="language-tsx">import { enumResolver } from '@real-enums/urql'
+
+cacheExchange({ resolvers: { Order: { state: enumResolver(OrderState) } } })</code></pre>
+        </details>
+
+        <details>
+          <summary>Anything else</summary>
+          <pre><code class="language-typescript">import { mapFields, realEnum } from 'real-enums'
+
+// Dotted paths; arrays are transparent at the root, along the path and at the leaf.
+const orders = mapFields&lt;Order[]&gt;(json, { state: OrderState, 'lines.status': LineStatus })
+
+// One field, either way.
+const { parse, serialize } = OrderState.codec()
+
+// Strict validation for anything that takes a Standard Schema.
+const schema = realEnum(OrderState)</code></pre>
+        </details>
+      </section>
+
+      <section id="examples">
+        <p class="eyebrow">Playground</p>
+        <h2>Try it live</h2>
+        <p>
+          The same orders screen in six apps, each open on StackBlitz in your browser. Only the data
+          wiring differs: the badge, the button copy and the filter all come from the enum. Every
+          app's test suite runs in CI.
+        </p>
+        <div class="overflow-auto">
+          <table class="striped">
+            <thead>
+              <tr>
+                <th scope="col">Data layer</th>
+                <th scope="col">Framework</th>
+                <th scope="col">Open</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <th scope="row">WarpDrive schema records</th>
+                <td>Ember, Vite</td>
+                <td>
+                  <a
+                    href="https://stackblitz.com/github/joegaudet/real-enums/tree/main/examples/ember-warp-drive?file=app/components/order-list.gts"
+                    target="_blank"
+                    rel="noopener"
+                    >StackBlitz</a
+                  >
+                </td>
+              </tr>
+              <tr>
+                <th scope="row">ember-data Models</th>
+                <td>Ember, Vite</td>
+                <td>
+                  <a
+                    href="https://stackblitz.com/github/joegaudet/real-enums/tree/main/examples/ember-data-models?file=app/models/order.ts"
+                    target="_blank"
+                    rel="noopener"
+                    >StackBlitz</a
+                  >
+                </td>
+              </tr>
+              <tr>
+                <th scope="row">TanStack Query</th>
+                <td>React</td>
+                <td>
+                  <a
+                    href="https://stackblitz.com/github/joegaudet/real-enums/tree/main/examples/react-tanstack-query?file=src/App.tsx"
+                    target="_blank"
+                    rel="noopener"
+                    >StackBlitz</a
+                  >
+                </td>
+              </tr>
+              <tr>
+                <th scope="row">SWR</th>
+                <td>React</td>
+                <td>
+                  <a
+                    href="https://stackblitz.com/github/joegaudet/real-enums/tree/main/examples/react-swr?file=src/App.tsx"
+                    target="_blank"
+                    rel="noopener"
+                    >StackBlitz</a
+                  >
+                </td>
+              </tr>
+              <tr>
+                <th scope="row">RTK Query</th>
+                <td>React</td>
+                <td>
+                  <a
+                    href="https://stackblitz.com/github/joegaudet/real-enums/tree/main/examples/react-rtk-query?file=src/App.tsx"
+                    target="_blank"
+                    rel="noopener"
+                    >StackBlitz</a
+                  >
+                </td>
+              </tr>
+              <tr>
+                <th scope="row">Apollo Client</th>
+                <td>React</td>
+                <td>
+                  <a
+                    href="https://stackblitz.com/github/joegaudet/real-enums/tree/main/examples/react-apollo?file=src/App.tsx"
+                    target="_blank"
+                    rel="noopener"
+                    >StackBlitz</a
+                  >
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <section id="api">
+        <p class="eyebrow">Reference</p>
+        <h2>The whole API</h2>
+        <div class="overflow-auto">
+          <table class="striped">
+            <thead>
+              <tr>
+                <th scope="col">Member</th>
+                <th scope="col">What it does</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <th scope="row"><code>value</code>, <code>label</code>, <code>id</code></th>
+                <td>
+                  The raw string; it capitalized (override it); the instance itself, for option
+                  values in templates (in JSX, use <code>value</code>).
+                </td>
+              </tr>
+              <tr>
+                <th scope="row"><code>Cls.values</code></th>
+                <td>Every static instance, in declaration order.</td>
+              </tr>
+              <tr>
+                <th scope="row"><code>Cls.valueFor(raw)</code></th>
+                <td>
+                  The instance for a raw value, or <code>undefined</code>. Takes an instance too.
+                </td>
+              </tr>
+              <tr>
+                <th scope="row"><code>@is()</code>, <code>@isNot()</code></th>
+                <td>
+                  Predicates named after a static member. A name with no matching member throws on
+                  first read.
+                </td>
+              </tr>
+              <tr>
+                <th scope="row"><code>Cls.codec()</code></th>
+                <td>
+                  <code>{ parse, serialize }</code>: lenient parsing (unknown and missing become
+                  <code>undefined</code>), raw values pass through serialize.
+                </td>
+              </tr>
+              <tr>
+                <th scope="row"><code>mapFields(data, map)</code></th>
+                <td>
+                  A copy of <code>data</code> with dotted paths mapped to instances. Never mutates;
+                  safe to run twice.
+                </td>
+              </tr>
+              <tr>
+                <th scope="row"><code>realEnum(Cls)</code></th>
+                <td>A strict Standard Schema v1 validator.</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <p>
+          Full details in the
+          <a href="https://github.com/joegaudet/real-enums/tree/main/packages/real-enums#readme"
+            >package README</a
+          >, including upgrading from 1.x.
+        </p>
+      </section>
+    </main>
+
+    <footer class="container">
+      <small>
+        MIT © Joe Gaudet ·
+        <a href="https://github.com/joegaudet/real-enums#readme">README</a> ·
+        <a href="https://github.com/joegaudet/real-enums/blob/main/CONTRIBUTING.md">Contributing</a>
+      </small>
+    </footer>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-typescript.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-jsx.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-tsx.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-bash.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-markup-templating.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-handlebars.min.js"></script>
+  </body>
+</html>

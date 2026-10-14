@@ -1,0 +1,32 @@
+{
+  "name": "example-react-apollo",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "typecheck": "tsc --noEmit",
+    "test": "tsc --noEmit && vitest run"
+  },
+  "dependencies": {
+    "@apollo/client": "^4.3.3",
+    "@real-enums/apollo": "^2.0.0",
+    "graphql": "^16.14.2",
+    "react": "^19.3.0",
+    "react-dom": "^19.3.0",
+    "real-enums": "^2.0.0",
+    "rxjs": "^7.8.2"
+  },
+  "devDependencies": {
+    "@testing-library/dom": "^10.4.2",
+    "@testing-library/react": "^16.3.3",
+    "@types/react": "^19.3.0",
+    "@types/react-dom": "^19.3.0",
+    "@vitejs/plugin-react": "^6.1.2",
+    "esbuild": "^0.27.7",
+    "jsdom": "^29.1.1",
+    "typescript": "^6.0.3",
+    "vite": "^8.3.4",
+    "vitest": "^5.0.4"
+  }
+}

@@ -1,0 +1,52 @@
+{
+  "name": "@real-enums/tanstack-query",
+  "version": "1.2.0",
+  "description": "real-enums for TanStack Query: map wire values to enums in `select`.",
+  "keywords": [
+    "tanstack-query",
+    "react-query",
+    "enum"
+  ],
+  "license": "MIT",
+  "author": "Joe Gaudet joe@joegaudet.com",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/joegaudet/real-enums.git",
+    "directory": "packages/tanstack-query"
+  },
+  "homepage": "https://joegaudet.com/real-enums/",
+  "bugs": "https://github.com/joegaudet/real-enums/issues",
+  "type": "module",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    },
+    "./package.json": "./package.json"
+  },
+  "files": [
+    "dist",
+    "CHANGELOG.md",
+    "README.md",
+    "LICENSE"
+  ],
+  "sideEffects": false,
+  "scripts": {
+    "build": "tsup",
+    "test": "vitest run"
+  },
+  "peerDependencies": {
+    "real-enums": "workspace:^"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "devDependencies": {
+    "real-enums": "workspace:^",
+    "@tanstack/query-core": "^5.104.2"
+  },
+  "engines": {
+    "node": ">=22.12.0"
+  }
+}
