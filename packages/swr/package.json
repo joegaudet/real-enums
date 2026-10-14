@@ -1,0 +1,58 @@
+{
+  "name": "@real-enums/swr",
+  "version": "1.2.0",
+  "description": "real-enums for SWR: a fetcher wrapper that maps wire values to enums.",
+  "keywords": [
+    "swr",
+    "react",
+    "enum"
+  ],
+  "license": "MIT",
+  "author": "Joe Gaudet joe@joegaudet.com",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/joegaudet/real-enums.git",
+    "directory": "packages/swr"
+  },
+  "homepage": "https://joegaudet.com/real-enums/",
+  "bugs": "https://github.com/joegaudet/real-enums/issues",
+  "type": "module",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    },
+    "./package.json": "./package.json"
+  },
+  "files": [
+    "dist",
+    "CHANGELOG.md",
+    "README.md",
+    "LICENSE"
+  ],
+  "sideEffects": false,
+  "scripts": {
+    "build": "tsup",
+    "test": "vitest run"
+  },
+  "peerDependencies": {
+    "real-enums": "workspace:^",
+    "swr": "^2.0.0"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "devDependencies": {
+    "real-enums": "workspace:^",
+    "swr": "^2.5.1",
+    "react": "^19.3.0",
+    "react-dom": "^19.3.0",
+    "@types/react": "^19.3.0",
+    "@testing-library/react": "^16.3.3",
+    "@testing-library/dom": "^10.4.1"
+  },
+  "engines": {
+    "node": ">=22.12.0"
+  }
+}

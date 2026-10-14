@@ -1,0 +1,54 @@
+{
+  "name": "@real-enums/warp-drive",
+  "version": "1.2.0",
+  "description": "real-enums for WarpDrive and ember-data: a schema Transformation and a legacy @attr transform.",
+  "keywords": [
+    "ember",
+    "ember-data",
+    "warp-drive",
+    "enum"
+  ],
+  "license": "MIT",
+  "author": "Joe Gaudet joe@joegaudet.com",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/joegaudet/real-enums.git",
+    "directory": "packages/warp-drive"
+  },
+  "homepage": "https://joegaudet.com/real-enums/",
+  "bugs": "https://github.com/joegaudet/real-enums/issues",
+  "type": "module",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    },
+    "./package.json": "./package.json"
+  },
+  "files": [
+    "dist",
+    "CHANGELOG.md",
+    "README.md",
+    "LICENSE"
+  ],
+  "sideEffects": false,
+  "scripts": {
+    "build": "tsup",
+    "test": "vitest run"
+  },
+  "peerDependencies": {
+    "real-enums": "workspace:^",
+    "@warp-drive/core": "^5.8.0"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "devDependencies": {
+    "real-enums": "workspace:^",
+    "@warp-drive/core": "^5.9.1"
+  },
+  "engines": {
+    "node": ">=22.12.0"
+  }
+}

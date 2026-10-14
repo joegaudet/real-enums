@@ -1,0 +1,18 @@
+packages:
+  - 'packages/*'
+  # Standalone apps StackBlitz opens from GitHub; see `overrides` below.
+  - 'examples/*'
+
+allowBuilds:
+  esbuild: true
+
+overrides:
+  # The examples ask for the published ranges (StackBlitz installs them from npm); inside the
+  # workspace they get the local packages instead.
+  'real-enums': 'workspace:*'
+  '@real-enums/warp-drive': 'workspace:*'
+  '@real-enums/tanstack-query': 'workspace:*'
+  '@real-enums/swr': 'workspace:*'
+  '@real-enums/rtk-query': 'workspace:*'
+  '@real-enums/apollo': 'workspace:*'
+  '@real-enums/urql': 'workspace:*'

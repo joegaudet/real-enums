@@ -1,0 +1,102 @@
+name: ci
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  static:
+    name: lint, format, build, typecheck
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: pnpm/action-setup@v6
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 22
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm format:check
+      - run: pnpm build
+      - run: pnpm lint
+      - run: pnpm typecheck
+
+  test:
+    name: unit (node ${{ matrix.node }})
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        node: [22, 24]
+    steps:
+      - uses: actions/checkout@v7
+      - uses: pnpm/action-setup@v6
+      - uses: actions/setup-node@v7
+        with:
+          node-version: ${{ matrix.node }}
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      # Adapters import real-enums' built output.
+      - run: pnpm build
+      - run: pnpm test
+
+  floors:
+    # Each adapter's peer range is a promise about its lowest version too; this is the only
+    # place that promise is checked.
+    name: unit (lowest supported libraries)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: pnpm/action-setup@v6
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 22
+          cache: pnpm
+      # Appended under the `overrides:` key that ends pnpm-workspace.yaml. `pnpm add` would not
+      # do: each add re-resolves the others from their ^ ranges back to the latest.
+      - name: Pin each adapter's library to the floor of its peer range
+        run: |
+          cat >> pnpm-workspace.yaml <<'YAML'
+            '@warp-drive/core': 5.8.0
+            '@tanstack/query-core': 5.0.0
+            swr: 2.0.0
+            '@reduxjs/toolkit': 2.0.0
+            '@apollo/client': 4.0.0
+            '@urql/exchange-graphcache': 9.0.0
+          YAML
+          pnpm install --no-frozen-lockfile
+      - run: pnpm build
+      - run: pnpm test
+
+  examples:
+    name: example (${{ matrix.example }})
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        example:
+          - ember-warp-drive
+          - ember-data-models
+          - react-tanstack-query
+          - react-swr
+          - react-rtk-query
+          - react-apollo
+    steps:
+      - uses: actions/checkout@v7
+      - uses: pnpm/action-setup@v6
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 22
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm build
+      # The Ember apps run their QUnit suites in the runner's preinstalled Chrome.
+      - run: pnpm --filter example-${{ matrix.example }} test

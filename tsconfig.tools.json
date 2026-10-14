@@ -1,0 +1,19 @@
+{
+  "$comment": "Not part of the solution build. Covers tests and build tooling, which the publishable tsconfigs exclude: type-aware linting uses it as their project, and `pnpm typecheck:tools` typechecks them.",
+  "extends": "./tsconfig.base.json",
+  "compilerOptions": {
+    "noEmit": true,
+    "allowJs": true,
+    "types": ["node"],
+    "jsx": "react-jsx"
+  },
+  "include": [
+    "eslint.config.js",
+    "*.config.ts",
+    "packages/*/tsup.config.ts",
+    "packages/*/vitest.config.ts",
+    "packages/*/tests/**/*.ts",
+    "packages/*/tests/**/*.tsx",
+    "scripts/*.mjs"
+  ]
+}
