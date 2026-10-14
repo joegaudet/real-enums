@@ -1,0 +1,93 @@
+<!doctype html>
+<!--
+  Source for site/social-card.png, the image link previews show (og:image). Not deployed.
+  Regenerate after editing (1200x630 is what Slack, X, LinkedIn and iMessage expect):
+
+  "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome" --headless=new --hide-scrollbars \
+    --window-size=1200,630 --screenshot=docs/site/social-card.png "file://$PWD/docs/social-card.html"
+-->
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@500;700;800&display=swap"
+    />
+    <style>
+      * {
+        box-sizing: border-box;
+        margin: 0;
+      }
+      body {
+        width: 1200px;
+        height: 630px;
+        overflow: hidden;
+        padding: 72px 80px;
+        background:
+          radial-gradient(38rem 26rem at 82% 40%, rgb(13 148 136 / 0.35), transparent 70%), #0b0b14;
+        color: #f8fafc;
+        font-family: Inter, system-ui, sans-serif;
+        display: flex;
+        flex-direction: column;
+      }
+      .brand {
+        display: flex;
+        align-items: center;
+        gap: 18px;
+        font-size: 34px;
+        font-weight: 700;
+      }
+      h1 {
+        margin-top: 56px;
+        font-size: 76px;
+        font-weight: 800;
+        line-height: 1.04;
+        letter-spacing: -0.03em;
+      }
+      .gradient {
+        background: linear-gradient(90deg, #2dd4bf, #fbbf24);
+        -webkit-background-clip: text;
+        background-clip: text;
+        color: transparent;
+      }
+      .chips {
+        margin-top: auto;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 12px;
+      }
+      .chips span {
+        padding: 8px 18px;
+        border: 1px solid rgb(255 255 255 / 0.18);
+        border-radius: 999px;
+        background: rgb(255 255 255 / 0.04);
+        color: #cbd5e1;
+        font-size: 22px;
+        font-weight: 500;
+      }
+      .wire {
+        position: absolute;
+        top: 80px;
+        right: 80px;
+        font-family: ui-monospace, Menlo, monospace;
+        font-size: 24px;
+        color: #fbbf24;
+        text-align: right;
+        line-height: 1.7;
+      }
+      .wire b {
+        color: #2dd4bf;
+        font-weight: 500;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="brand"><img src="site/logo.svg" width="56" height="56" alt="" />real-enums</div>
+    <div class="wire">"shipped" → <b>OrderState.Shipped</b></div>
+    <h1>Your API sends strings.<br />Your UI gets <span class="gradient">real enums</span>.</h1>
+    <div class="chips">
+      <span>WarpDrive</span><span>ember-data</span><span>TanStack Query</span><span>SWR</span
+      ><span>RTK Query</span><span>Apollo</span><span>urql</span>
+    </div>
+  </body>
+</html>
