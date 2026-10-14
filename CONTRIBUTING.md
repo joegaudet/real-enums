@@ -76,15 +76,31 @@ python3 -m http.server 8766 --directory docs/site
 
 ## Releasing
 
-Once per repository, before the first publish:
+### The first release (once)
 
-- Create the `real-enums` organization on npmjs.com, so the `@real-enums/*` scope exists.
-- For every package, add this repository and `release.yml` as a trusted publisher in its
-  npmjs.com settings. Publishing is OIDC; there is no `NPM_TOKEN`.
-- Allow GitHub Actions to create pull requests (Settings → Actions → General).
+npm will not configure a trusted publisher for a package that has never been published, so the
+first publish of the six `@real-enums/*` names uses a short-lived token, once:
 
-After that, releases are automatic. Merging to `main` with changesets pending opens a "Version
-Packages" PR; merging _that_ publishes, with provenance, through `scripts/publish.mjs`.
+1. On npmjs.com, create a granular access token that can publish `real-enums` and
+   `@real-enums/*`, with the shortest expiry allowed.
+2. Store it in the `npm-bootstrap` environment (already created: you must approve each run, and
+   it only deploys from `main` or `changeset-release/*`):
+   `gh secret set NPM_TOKEN --env npm-bootstrap --repo joegaudet/real-enums`
+3. Merge this work, wait for the "Version Packages" PR, then publish from its branch:
+   `gh workflow run bootstrap-publish.yml --repo joegaudet/real-enums --ref changeset-release/main -f confirm=publish`
+4. On npmjs.com, for each of the seven packages: Settings → Trusted publisher → repository
+   `joegaudet/real-enums`, workflow `release.yml`.
+5. Revoke the token, delete the secret, and delete `bootstrap-publish.yml`. The header of that
+   file has the details.
+
+Also allow GitHub Actions to create pull requests (Settings → Actions → General), or the
+"Version Packages" PR cannot open.
+
+### Every release after
+
+Merging to `main` with changesets pending opens a "Version Packages" PR; merging _that_
+publishes, with provenance, through `scripts/publish.mjs`. Publishing is OIDC; there is no
+`NPM_TOKEN`.
 
 ## Changesets
 
