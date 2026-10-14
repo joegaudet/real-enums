@@ -29,3 +29,25 @@ test('the README shows the tested OrderState', () => {
 test('the site shows the tested OrderState', () => {
   expect(classBlock(unescapeHtml(read('../../../docs/site/index.html')))).toBe(fixture)
 })
+
+// Link previews (Slack, X, LinkedIn, iMessage) read these. Without og:image Slack falls back to
+// the SVG favicon, which it cannot render.
+test('the site has link-preview meta with an absolute 1200x630 PNG card', () => {
+  const site = read('../../../docs/site/index.html')
+  const meta = (key: string) =>
+    new RegExp(`<meta\\s+(?:property|name)="${key}"\\s+content="([^"]+)"`).exec(site)?.[1]
+
+  const base = 'https://joegaudet.com/real-enums/'
+  expect(meta('og:url')).toBe(base)
+  expect(meta('og:title')).toBeTruthy()
+  expect(meta('og:description')).toBeTruthy()
+  expect(meta('twitter:card')).toBe('summary_large_image')
+  const image = meta('og:image')!
+  expect(image.startsWith(base)).toBe(true)
+
+  const png = readFileSync(
+    new URL(`../../../docs/site/${image.slice(base.length)}`, import.meta.url),
+  )
+  expect(png.subarray(1, 4).toString()).toBe('PNG')
+  expect([png.readUInt32BE(16), png.readUInt32BE(20)]).toEqual([1200, 630])
+})

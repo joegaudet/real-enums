@@ -67,6 +67,9 @@ site in the same PR**:
 - **A public API used in a snippet changes** (`Enum`, `is`, `codec`, `mapFields`, `realEnum`, an
   adapter's function): every snippet that uses it. Search `docs/site/index.html` for the name.
 - **An example app is added, removed or renamed:** its "Open in StackBlitz" link.
+- **The headline or the adapter list changes:** the link-preview card too. Edit
+  `docs/social-card.html` and re-render `docs/site/social-card.png` with the command in its
+  header comment; `docs.test.ts` checks the meta tags and the image size.
 
 To preview:
 
