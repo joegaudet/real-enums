@@ -4,7 +4,7 @@
 Transformation for schema records, and a transform for `@attr` on legacy Models.
 
 ```bash
-npm install real-enums @real-enums/warp-drive
+npm install @real-enums/core @real-enums/warp-drive
 ```
 
 Works with `@warp-drive/core` 5.8 and later (ember-data 5.8+). Nothing here imports Ember, so

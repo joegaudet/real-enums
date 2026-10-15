@@ -1,6 +1,6 @@
 import type { Transformation } from '@warp-drive/core/reactive'
 import { Type } from '@warp-drive/core/types/symbols'
-import type { Enum, EnumClass } from 'real-enums'
+import type { Enum, EnumClass } from '@real-enums/core'
 
 type Raw = string | null | undefined
 type Hydrated<T> = T | undefined

@@ -1,5 +1,5 @@
 import { renderHook, waitFor } from '@testing-library/react'
-import { Enum } from 'real-enums'
+import { Enum } from '@real-enums/core'
 import type { ReactNode } from 'react'
 import useSWR, { SWRConfig } from 'swr'
 import { expect, test } from 'vitest'

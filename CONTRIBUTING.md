@@ -8,7 +8,7 @@ pnpm build    # tsc writes the declarations, tsup the JS
 ```
 
 Node ≥ 22.12 and pnpm. Packages resolve to each other through the workspace, but they import
-each other's **built** output, so run `pnpm build` after changing `real-enums` before testing
+each other's **built** output, so run `pnpm build` after changing `@real-enums/core` before testing
 an adapter or an example.
 
 ## The gate

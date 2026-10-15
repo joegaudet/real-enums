@@ -1,4 +1,4 @@
-import { mapFields, type FieldMap } from 'real-enums'
+import { mapFields, type FieldMap } from '@real-enums/core'
 
 /**
  * A `select` for useQuery/queryOptions that turns wire values into enum instances:

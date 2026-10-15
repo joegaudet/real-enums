@@ -1,5 +1,5 @@
 import { isPlain } from '@reduxjs/toolkit'
-import { Enum, mapFields, type FieldMap } from 'real-enums'
+import { Enum, mapFields, type FieldMap } from '@real-enums/core'
 
 /**
  * A `transformResponse` that turns wire values into enum instances:

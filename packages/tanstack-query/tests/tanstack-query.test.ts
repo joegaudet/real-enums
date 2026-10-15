@@ -1,5 +1,5 @@
 import { QueryClient, QueryObserver, dehydrate } from '@tanstack/query-core'
-import { Enum } from 'real-enums'
+import { Enum } from '@real-enums/core'
 import { afterEach, expect, test } from 'vitest'
 
 import { enumSelect } from '../src/index.js'

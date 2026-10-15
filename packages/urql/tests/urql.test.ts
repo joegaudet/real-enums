@@ -1,6 +1,6 @@
 import { Client, gql, makeResult, type Exchange } from '@urql/core'
 import { cacheExchange } from '@urql/exchange-graphcache'
-import { Enum } from 'real-enums'
+import { Enum } from '@real-enums/core'
 import { expect, test } from 'vitest'
 import { filter, map, pipe } from 'wonka'
 

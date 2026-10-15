@@ -4,7 +4,7 @@
 serializable check that accepts enums.
 
 ```bash
-npm install real-enums @real-enums/rtk-query
+npm install @real-enums/core @real-enums/rtk-query
 ```
 
 ```ts
