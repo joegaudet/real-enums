@@ -391,15 +391,45 @@ JSON.stringify({ state: OrderState.Shipped }) // '{"state":"shipped"}'</code></p
           type. Cases are the static members, one case can take several, and
           <code>.otherwise()</code> is the catch-all.
         </p>
-        <pre><code class="language-typescript">const statusText = (state: OrderState) =&gt;
+        <p>Say returns become a state:</p>
+        <pre><code class="language-typescript">static Returned = OrderState.of('returned')</code></pre>
+        <div class="grid">
+          <article>
+            <header>Before: a <code>switch</code> that still compiles</header>
+            <pre><code class="language-typescript">const statusText = (state: OrderState) =&gt; {
+  switch (state) {
+    case OrderState.Pending:
+    case OrderState.Shipped:
+      return 'In progress'
+    case OrderState.Delivered:
+      return 'Done'
+    case OrderState.Cancelled:
+      return 'Cancelled'
+  }
+}
+
+statusText(OrderState.Returned) // undefined, and no one is told</code></pre>
+          </article>
+          <article>
+            <header>After: a <code>match</code> that won't, until it's handled</header>
+            <pre><code class="language-typescript">const statusText = (state: OrderState) =&gt;
   OrderState.match(state)
     .when([OrderState.Pending, OrderState.Shipped], () =&gt; 'In progress')
     .when([OrderState.Delivered], () =&gt; 'Done')
     .when([OrderState.Cancelled], () =&gt; 'Cancelled')
-    .exhaustive() // a member left out, or handled twice, is a type error</code></pre>
+    .exhaustive()</code></pre>
+            <pre><code class="language-plaintext">error TS2349: This expression is not callable.
+  Type '{ unhandled: OrderState &amp; { readonly value: "returned"; }; }'
+  has no call signatures.</code></pre>
+            <p>
+              The error names the member left out. Add
+              <code>.when([OrderState.Returned], () =&gt; 'Returned')</code> and it compiles.
+            </p>
+          </article>
+        </div>
         <p>
-          Add a member and every <code>.exhaustive()</code> on the enum fails to compile until it
-          handles it. More in the <a href="guide/#match">guide</a>.
+          A member handled twice, or a string where a member belongs, is a type error too. More in
+          the <a href="guide/#match">guide</a>.
         </p>
       </section>
 
