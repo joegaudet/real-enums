@@ -30,6 +30,17 @@ test('the site shows the tested OrderState', () => {
   expect(classBlock(unescapeHtml(read('../../../docs/site/index.html')))).toBe(fixture)
 })
 
+test('the guide shows the tested OrderState', () => {
+  expect(classBlock(unescapeHtml(read('../../../docs/site/guide/index.html')))).toBe(fixture)
+})
+
+test('llms.txt shows the tested OrderState and the rules agents follow', () => {
+  const llms = read('../../../docs/site/llms.txt')
+  expect(classBlock(llms)).toBe(fixture)
+  expect(llms).toContain('`Cls.of(')
+  expect(llms).toContain('.exhaustive()')
+})
+
 // Link previews (Slack, X, LinkedIn, iMessage) read these. Without og:image Slack falls back to
 // the SVG favicon, which it cannot render.
 test('the site has link-preview meta with an absolute 1200x630 PNG card', () => {
