@@ -1,0 +1,96 @@
+# real-enums
+
+> Enums that are real classes, for TypeScript, Ember and React. Each value is a static
+> member; labels, CSS classes and transitions are getters on it. Adapters turn the strings an
+> API sends into members for WarpDrive/ember-data, TanStack Query, SWR, RTK Query, Apollo and
+> urql. `Cls.match(value)` branches on a member with the compiler checking every member is
+> handled.
+
+## Rules for writing code with real-enums
+
+1. Declare members with `Cls.of('value')`, never `new Cls('value')`. `of` gives each member
+   its own type, which `match` needs; an enum with a `new` member cannot be matched. Extra
+   constructor arguments follow the value: `Icon.of('open', '🟢')`.
+2. When every member needs an answer, use `Cls.match(value)` and end with `.exhaustive()`.
+   Do not write `if`/`else` chains, `switch` statements or lookup tables over members for
+   this: TypeScript cannot check them, so a new member is silently missed. Tables keyed by
+   `value` (like `next` in the example) are for lookups only some members answer.
+3. Cases are static members (`OrderState.Pending`), never strings (`'pending'`). One `.when`
+   takes several members: `.when([OrderState.Pending, OrderState.Shipped], fn)`.
+4. Use `.otherwise(fn)` only when a fallback is truly intended. It turns the exhaustiveness
+   check off for that match.
+5. Compare members with `===` or a predicate (`state.isPending`), not with their string value.
+6. Put behaviour that belongs to the value (label, CSS class, next state) in a getter on the
+   class, not in the template or component.
+7. A type error from `match` names the member to handle. Fix it by handling that member;
+   never with a cast, `any`, `@ts-ignore` or `@ts-expect-error`.
+8. Raw strings from an API become members through the data layer's adapter, or
+   `mapFields`/`Cls.codec()`. Do not call `Cls.valueFor` by hand in every component.
+
+## Example
+
+```ts
+import { Enum, is, isNot } from 'real-enums'
+
+export class OrderState extends Enum {
+  static Pending = OrderState.of('pending')
+  static Shipped = OrderState.of('shipped')
+  static Delivered = OrderState.of('delivered')
+  static Cancelled = OrderState.of('cancelled')
+
+  @is() accessor isPending!: boolean
+  @is() accessor isCancelled!: boolean
+  @isNot() accessor isNotCancelled!: boolean
+
+  get next(): OrderState | undefined {
+    return {
+      [OrderState.Pending.value]: OrderState.Shipped,
+      [OrderState.Shipped.value]: OrderState.Delivered,
+    }[this.value]
+  }
+
+  get advanceLabel(): string | undefined {
+    return {
+      [OrderState.Pending.value]: 'Ship',
+      [OrderState.Shipped.value]: 'Deliver',
+    }[this.value]
+  }
+
+  get className() {
+    return `badge badge--${this.value}`
+  }
+}
+```
+
+Every member handled, two of them in one case:
+
+```ts
+const statusText = (state: OrderState) =>
+  OrderState.match(state)
+    .when([OrderState.Pending, OrderState.Shipped], () => 'In progress')
+    .when([OrderState.Delivered], () => 'Done')
+    .when([OrderState.Cancelled], () => 'Cancelled')
+    .exhaustive()
+```
+
+A deliberate fallback:
+
+```ts
+const canEdit = (state: OrderState) =>
+  OrderState.match(state)
+    .when([OrderState.Pending], () => true)
+    .otherwise(() => false)
+```
+
+In Ember apps, which compile legacy decorators, predicates are written
+`@is() declare isPending: boolean`.
+
+## Docs
+
+- [Guide](https://joegaudet.com/real-enums/guide/): declaring enums, predicates, exhaustive
+  matching, data layers, validation and the API
+- [Package README](https://github.com/joegaudet/real-enums/tree/main/packages/real-enums#readme):
+  the full API, including upgrading from 1.x
+- [Adapter setup](https://joegaudet.com/real-enums/#ember): Ember and React data layers
+- [Examples](https://github.com/joegaudet/real-enums/tree/main/examples): one app per data
+  layer

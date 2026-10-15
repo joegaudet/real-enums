@@ -1,10 +1,10 @@
 import { Enum, is, isNot } from 'real-enums'
 
 export class OrderState extends Enum {
-  static Pending = new OrderState('pending')
-  static Shipped = new OrderState('shipped')
-  static Delivered = new OrderState('delivered')
-  static Cancelled = new OrderState('cancelled')
+  static Pending = OrderState.of('pending')
+  static Shipped = OrderState.of('shipped')
+  static Delivered = OrderState.of('delivered')
+  static Cancelled = OrderState.of('cancelled')
 
   // Standard decorators; vite.config.ts lowers them, since Vite 8 leaves them in place.
   @is() accessor isPending!: boolean

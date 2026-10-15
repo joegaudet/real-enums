@@ -46,6 +46,7 @@
     />
     <link rel="stylesheet" href="site.css" />
     <link rel="icon" href="favicon.svg" type="image/svg+xml" />
+    <link rel="alternate" type="text/plain" href="llms.txt" title="llms.txt" />
     <link rel="apple-touch-icon" href="apple-touch-icon.png" />
   </head>
   <body>
@@ -58,6 +59,7 @@
         </ul>
         <ul>
           <li class="wide-only"><a href="#why">Why</a></li>
+          <li><a href="guide/">Guide</a></li>
           <li><a href="#ember">Ember</a></li>
           <li><a href="#react">React</a></li>
           <li class="wide-only"><a href="#examples">Examples</a></li>
@@ -334,16 +336,16 @@
         <p class="eyebrow">Define one</p>
         <h2>An enum is a class with static members</h2>
         <p>
-          Each value is a static instance. Everything else is an ordinary getter, so it can be as
-          rich as the domain needs.
+          Each value is a static instance, declared with <code>Cls.of(value)</code>. Everything else
+          is an ordinary getter, so it can be as rich as the domain needs.
         </p>
         <pre><code class="language-typescript">import { Enum, is, isNot } from 'real-enums'
 
 export class OrderState extends Enum {
-  static Pending = new OrderState('pending')
-  static Shipped = new OrderState('shipped')
-  static Delivered = new OrderState('delivered')
-  static Cancelled = new OrderState('cancelled')
+  static Pending = OrderState.of('pending')
+  static Shipped = OrderState.of('shipped')
+  static Delivered = OrderState.of('delivered')
+  static Cancelled = OrderState.of('cancelled')
 
   @is() accessor isPending!: boolean
   @is() accessor isCancelled!: boolean
@@ -378,6 +380,26 @@ JSON.stringify({ state: OrderState.Shipped }) // '{"state":"shipped"}'</code></p
           is one line per table. In Ember, where decorators are compiled with legacy semantics,
           write <code>@is() declare isPending: boolean</code>; Vite 8 leaves decorators alone, so a
           React app on Vite adds a small transform (the examples show one).
+        </p>
+      </section>
+
+      <section id="match">
+        <p class="eyebrow">Branch on it</p>
+        <h2>Handle every case, or it doesn't compile</h2>
+        <p>
+          <code>match</code> is checked by the compiler, like Scala's <code>match</code> on a sealed
+          type. Cases are the static members, one case can take several, and
+          <code>.otherwise()</code> is the catch-all.
+        </p>
+        <pre><code class="language-typescript">const statusText = (state: OrderState) =&gt;
+  OrderState.match(state)
+    .when([OrderState.Pending, OrderState.Shipped], () =&gt; 'In progress')
+    .when([OrderState.Delivered], () =&gt; 'Done')
+    .when([OrderState.Cancelled], () =&gt; 'Cancelled')
+    .exhaustive() // a member left out, or handled twice, is a type error</code></pre>
+        <p>
+          Add a member and every <code>.exhaustive()</code> on the enum fails to compile until it
+          handles it. More in the <a href="guide/#match">guide</a>.
         </p>
       </section>
 
@@ -659,6 +681,19 @@ const schema = realEnum(OrderState)</code></pre>
             </thead>
             <tbody>
               <tr>
+                <th scope="row"><code>Cls.of(value)</code></th>
+                <td>
+                  Declares a member, typed as that member alone, which <code>match</code> needs.
+                </td>
+              </tr>
+              <tr>
+                <th scope="row"><code>Cls.match(value)</code></th>
+                <td>
+                  A match the compiler checks: <code>.when([members], fn)</code>, then
+                  <code>.exhaustive()</code> or the <code>.otherwise(fn)</code> catch-all.
+                </td>
+              </tr>
+              <tr>
                 <th scope="row"><code>value</code>, <code>label</code>, <code>id</code></th>
                 <td>
                   The raw string; it capitalized (override it); the instance itself, for option
@@ -704,10 +739,12 @@ const schema = realEnum(OrderState)</code></pre>
           </table>
         </div>
         <p>
-          Full details in the
+          Walked through in the <a href="guide/">guide</a>, with every detail in the
           <a href="https://github.com/joegaudet/real-enums/tree/main/packages/real-enums#readme"
             >package README</a
-          >, including upgrading from 1.x.
+          >, including upgrading from 1.x. Writing code with an AI agent? Point it at
+          <a href="llms.txt"><code>llms.txt</code></a
+          >.
         </p>
       </section>
     </main>
@@ -715,7 +752,9 @@ const schema = realEnum(OrderState)</code></pre>
     <footer class="container">
       <small>
         MIT © Joe Gaudet ·
+        <a href="guide/">Guide</a> ·
         <a href="https://github.com/joegaudet/real-enums#readme">README</a> ·
+        <a href="llms.txt">llms.txt</a> ·
         <a href="https://github.com/joegaudet/real-enums/blob/main/CONTRIBUTING.md">Contributing</a>
       </small>
     </footer>

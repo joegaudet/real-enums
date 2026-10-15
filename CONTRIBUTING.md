@@ -55,8 +55,9 @@ way.
 
 ## The website
 
-[joegaudet.com/real-enums](https://joegaudet.com/real-enums/) is built from `docs/site/`: one
-hand-written `index.html` and `site.css` on Pico.css, no build step.
+[joegaudet.com/real-enums](https://joegaudet.com/real-enums/) is built from `docs/site/`:
+hand-written pages on Pico.css with one shared `site.css`, no build step. `index.html` is the
+landing page, `guide/index.html` the guide, and `llms.txt` the rules AI coding agents read.
 `.github/workflows/pages.yml` deploys it on every push to `main` that touches `docs/site/`.
 
 Nothing generates it from the code, so **a PR that changes anything the site shows updates the
@@ -64,8 +65,12 @@ site in the same PR**:
 
 - **An adapter is added, removed or renamed:** the adapters grid, its tab in the "Wire it up"
   section, and the install list.
-- **A public API used in a snippet changes** (`Enum`, `is`, `codec`, `mapFields`, `realEnum`, an
-  adapter's function): every snippet that uses it. Search `docs/site/index.html` for the name.
+- **A public API used in a snippet changes** (`Enum`, `of`, `match`, `is`, `codec`, `mapFields`,
+  `realEnum`, an adapter's function): every snippet that uses it, on the landing page, in the
+  guide and in `llms.txt`. Search `docs/site/` for the name.
+- **A public API is added:** a row in both API tables (landing page and guide), a guide
+  section if it changes how people write code, and a rule in `llms.txt` if agents should use
+  it a particular way.
 - **An example app is added, removed or renamed:** its "Open in StackBlitz" link.
 - **The headline or the adapter list changes:** the link-preview card too. Edit
   `docs/social-card.html` and re-render `docs/site/social-card.png` with the command in its

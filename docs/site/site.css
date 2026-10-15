@@ -648,3 +648,66 @@ td img {
 #react details pre {
   margin-bottom: 1rem;
 }
+
+/* Guide: a sticky contents column beside the sections; stacked on narrow screens. */
+.brand-link {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: inherit;
+}
+
+.guide {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  column-gap: 3rem;
+}
+
+.guide > section {
+  min-width: 0;
+  padding-top: 3.5rem;
+}
+
+.guide-toc nav {
+  padding-top: 2rem;
+}
+
+.guide-toc ul {
+  margin: 0 0 1.25rem;
+  padding: 0;
+}
+
+.guide-toc li {
+  list-style: none;
+  margin: 0;
+  padding: 0.15rem 0;
+}
+
+.guide-toc a {
+  color: var(--pico-muted-color);
+  text-decoration: none;
+}
+
+.guide-toc a:hover {
+  color: var(--pico-primary);
+}
+
+@media (min-width: 900px) {
+  .guide {
+    grid-template-columns: 13rem minmax(0, 1fr);
+  }
+
+  .guide > section {
+    grid-column: 2;
+  }
+
+  .guide-toc {
+    grid-column: 1;
+    grid-row: 1 / span 20;
+  }
+
+  .guide-toc nav {
+    position: sticky;
+    top: 4rem;
+  }
+}
