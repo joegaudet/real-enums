@@ -9,10 +9,10 @@
     "test": "tsc --noEmit && vitest run"
   },
   "dependencies": {
-    "@real-enums/swr": "^2.0.0",
+    "@real-enums/swr": "^2.1.0",
     "react": "^19.3.0",
     "react-dom": "^19.3.0",
-    "@real-enums/core": "^2.0.0",
+    "@real-enums/core": "^2.1.0",
     "swr": "^2.5.1"
   },
   "devDependencies": {

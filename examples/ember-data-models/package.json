@@ -16,8 +16,8 @@
     "test": "ember-tsc --noEmit && vite build --mode development && testem ci --port 0"
   },
   "dependencies": {
-    "@real-enums/warp-drive": "^2.0.0",
-    "@real-enums/core": "^2.0.0"
+    "@real-enums/warp-drive": "^2.1.0",
+    "@real-enums/core": "^2.1.0"
   },
   "devDependencies": {
     "@babel/core": "^7.29.7",
