@@ -1,6 +1,6 @@
 {
   "name": "@real-enums/swr",
-  "version": "1.2.0",
+  "version": "2.0.0",
   "description": "real-enums for SWR: a fetcher wrapper that maps wire values to enums.",
   "keywords": [
     "swr",
