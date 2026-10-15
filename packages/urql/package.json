@@ -1,6 +1,6 @@
 {
   "name": "@real-enums/urql",
-  "version": "1.2.0",
+  "version": "2.0.0",
   "description": "real-enums for urql Graphcache: a resolver that reads enums out of the cache.",
   "keywords": [
     "urql",

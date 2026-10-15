@@ -1,6 +1,6 @@
 {
   "name": "@real-enums/rtk-query",
-  "version": "1.2.0",
+  "version": "2.0.0",
   "description": "real-enums for RTK Query: transformResponse and a serializable check that accepts enums.",
   "keywords": [
     "redux",
