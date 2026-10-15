@@ -12,7 +12,7 @@
     "@real-enums/swr": "^2.0.0",
     "react": "^19.3.0",
     "react-dom": "^19.3.0",
-    "real-enums": "^2.0.0",
+    "@real-enums/core": "^2.0.0",
     "swr": "^2.5.1"
   },
   "devDependencies": {

@@ -1,5 +1,5 @@
 import { ApolloClient, ApolloLink, InMemoryCache, gql } from '@apollo/client'
-import { Enum } from 'real-enums'
+import { Enum } from '@real-enums/core'
 import { of } from 'rxjs'
 import { expect, test } from 'vitest'
 

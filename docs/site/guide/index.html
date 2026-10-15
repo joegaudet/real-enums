@@ -79,7 +79,7 @@
         <p>
           One package for the enum itself, plus the adapter for your data layer if you have one.
         </p>
-        <pre><code class="language-bash">npm i real-enums</code></pre>
+        <pre><code class="language-bash">npm i @real-enums/core</code></pre>
         <div class="overflow-auto">
           <table class="striped">
             <thead>
@@ -115,7 +115,9 @@
               </tr>
               <tr>
                 <td>Anything else</td>
-                <td><code>mapFields</code> / <code>codec()</code>, in <code>real-enums</code></td>
+                <td>
+                  <code>mapFields</code> / <code>codec()</code>, in <code>@real-enums/core</code>
+                </td>
               </tr>
             </tbody>
           </table>
@@ -129,7 +131,7 @@
           An enum is a class. Each value is a static member declared with
           <code>Cls.of(value)</code>; everything else is an ordinary getter.
         </p>
-        <pre><code class="language-typescript">import { Enum, is, isNot } from 'real-enums'
+        <pre><code class="language-typescript">import { Enum, is, isNot } from '@real-enums/core'
 
 export class OrderState extends Enum {
   static Pending = OrderState.of('pending')
@@ -328,7 +330,7 @@ const canEdit = (state: OrderState) =&gt;
           </li>
         </ul>
         <p>Anywhere else, map the fields yourself:</p>
-        <pre><code class="language-typescript">import { mapFields } from 'real-enums'
+        <pre><code class="language-typescript">import { mapFields } from '@real-enums/core'
 
 // Dotted paths; arrays are transparent at the root, along the path and at the leaf.
 const orders = mapFields&lt;Order[]&gt;(json, { state: OrderState, 'lines.status': LineStatus })
@@ -345,7 +347,7 @@ const { parse, serialize } = OrderState.codec()</code></pre>
           takes one: TanStack Form, tRPC, Hono and others. Anything but one of the enum's values or
           members is an issue.
         </p>
-        <pre><code class="language-typescript">import { realEnum } from 'real-enums'
+        <pre><code class="language-typescript">import { realEnum } from '@real-enums/core'
 
 realEnum(OrderState)['~standard'].validate('pending') // { value: OrderState.Pending }
 realEnum(OrderState)['~standard'].validate('nope') // { issues: [...] }</code></pre>

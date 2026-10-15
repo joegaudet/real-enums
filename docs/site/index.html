@@ -96,7 +96,7 @@
           </div>
           <div class="install">
             <span class="prompt" aria-hidden="true">$</span>
-            <code>npm i real-enums</code>
+            <code>npm i @real-enums/core</code>
           </div>
           <p class="install-note">Then add the adapter for your data layer, if you have one.</p>
         </div>
@@ -339,7 +339,7 @@
           Each value is a static instance, declared with <code>Cls.of(value)</code>. Everything else
           is an ordinary getter, so it can be as rich as the domain needs.
         </p>
-        <pre><code class="language-typescript">import { Enum, is, isNot } from 'real-enums'
+        <pre><code class="language-typescript">import { Enum, is, isNot } from '@real-enums/core'
 
 export class OrderState extends Enum {
   static Pending = OrderState.of('pending')
@@ -413,7 +413,7 @@ JSON.stringify({ state: OrderState.Shipped }) // '{"state":"shipped"}'</code></p
           classic builds alike.
         </p>
         <div class="install-block">
-          <pre><code class="language-bash">npm i real-enums @real-enums/warp-drive</code></pre>
+          <pre><code class="language-bash">npm i @real-enums/core @real-enums/warp-drive</code></pre>
         </div>
         <div class="use-cases">
           <article>
@@ -489,7 +489,7 @@ export default class Order extends Model {
 
         <details open>
           <summary>TanStack Query</summary>
-          <pre><code class="language-bash">npm i real-enums @real-enums/tanstack-query</code></pre>
+          <pre><code class="language-bash">npm i @real-enums/core @real-enums/tanstack-query</code></pre>
           <pre><code class="language-tsx">import { enumSelect } from '@real-enums/tanstack-query'
 
 // Outside the component, so it isn't re-run every render.
@@ -505,7 +505,7 @@ const { data } = useQuery({ queryKey: ['orders'], queryFn: fetchOrders, select: 
 
         <details>
           <summary>SWR</summary>
-          <pre><code class="language-bash">npm i real-enums @real-enums/swr</code></pre>
+          <pre><code class="language-bash">npm i @real-enums/core @real-enums/swr</code></pre>
           <pre><code class="language-tsx">import { withEnums } from '@real-enums/swr'
 
 const fetchOrders = withEnums&lt;Order[]&gt;(fetchJson, { state: OrderState })
@@ -515,7 +515,7 @@ const { data } = useSWR('/api/orders', fetchOrders) // data: Order[] | undefined
 
         <details>
           <summary>RTK Query</summary>
-          <pre><code class="language-bash">npm i real-enums @real-enums/rtk-query</code></pre>
+          <pre><code class="language-bash">npm i @real-enums/core @real-enums/rtk-query</code></pre>
           <pre><code class="language-tsx">import { enumResponse, isSerializable } from '@real-enums/rtk-query'
 
 const api = createApi({
@@ -538,7 +538,7 @@ const store = configureStore({
 
         <details>
           <summary>Apollo Client</summary>
-          <pre><code class="language-bash">npm i real-enums @real-enums/apollo</code></pre>
+          <pre><code class="language-bash">npm i @real-enums/core @real-enums/apollo</code></pre>
           <pre><code class="language-tsx">import { enumField } from '@real-enums/apollo'
 
 const cache = new InMemoryCache({
@@ -552,7 +552,7 @@ const cache = new InMemoryCache({
 
         <details>
           <summary>urql (Graphcache)</summary>
-          <pre><code class="language-bash">npm i real-enums @real-enums/urql</code></pre>
+          <pre><code class="language-bash">npm i @real-enums/core @real-enums/urql</code></pre>
           <pre><code class="language-tsx">import { enumResolver } from '@real-enums/urql'
 
 cacheExchange({ resolvers: { Order: { state: enumResolver(OrderState) } } })</code></pre>
@@ -560,7 +560,7 @@ cacheExchange({ resolvers: { Order: { state: enumResolver(OrderState) } } })</co
 
         <details>
           <summary>Anything else</summary>
-          <pre><code class="language-typescript">import { mapFields, realEnum } from 'real-enums'
+          <pre><code class="language-typescript">import { mapFields, realEnum } from '@real-enums/core'
 
 // Dotted paths; arrays are transparent at the root, along the path and at the leaf.
 const orders = mapFields&lt;Order[]&gt;(json, { state: OrderState, 'lines.status': LineStatus })

@@ -1,5 +1,5 @@
 ---
-'real-enums': minor
+'@real-enums/core': minor
 ---
 
 `Cls.of(value)` declares a member typed as itself, and `Cls.match(value)` branches on members

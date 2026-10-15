@@ -8,7 +8,7 @@ pnpm build    # tsc writes the declarations, tsup the JS
 ```
 
 Node ≥ 22.12 and pnpm. Packages resolve to each other through the workspace, but they import
-each other's **built** output, so run `pnpm build` after changing `real-enums` before testing
+each other's **built** output, so run `pnpm build` after changing `@real-enums/core` before testing
 an adapter or an example.
 
 ## The gate
@@ -84,31 +84,33 @@ python3 -m http.server 8766 --directory docs/site
 
 ## Releasing
 
-### The first release (once)
+A release is cut by pushing a tag. Nothing publishes on merge.
 
-npm will not configure a trusted publisher for a package that has never been published, so the
-first publish of the six `@real-enums/*` names uses a short-lived token, once:
+1. PRs that change a published package carry a changeset (`pnpm changeset`). While any are
+   pending on `main`, CI keeps a "chore: version packages" PR open with the next version and
+   the changelogs.
+2. Merge that PR.
+3. Tag the merge commit with the new version and push the tag:
 
-1. On npmjs.com, create a granular access token that can publish `real-enums` and
-   `@real-enums/*`, with the shortest expiry allowed.
-2. Store it in the `npm-bootstrap` environment (already created: you must approve each run, and
-   it only deploys from `main` or `changeset-release/*`):
-   `gh secret set NPM_TOKEN --env npm-bootstrap --repo joegaudet/real-enums`
-3. Merge this work, wait for the "Version Packages" PR, then publish from its branch:
-   `gh workflow run bootstrap-publish.yml --repo joegaudet/real-enums --ref changeset-release/main -f confirm=publish`
-4. On npmjs.com, for each of the seven packages: Settings → Trusted publisher → repository
-   `joegaudet/real-enums`, workflow `release.yml`.
-5. Revoke the token, delete the secret, and delete `bootstrap-publish.yml`. The header of that
-   file has the details.
+   ```bash
+   git switch main && git pull
+   git tag -a v1.2.3 -m v1.2.3
+   git push origin v1.2.3
+   ```
 
-Also allow GitHub Actions to create pull requests (Settings → Actions → General), or the
-"Version Packages" PR cannot open.
+`release.yml` checks that the tag is on `main` and matches every public package's version,
+publishes whatever is not already on npm through `scripts/publish.mjs` (OIDC trusted publishing
+with provenance; there is no `NPM_TOKEN`), then creates the GitHub release. If a run fails, re-run
+it: it skips what is already published.
 
-### Every release after
+**A brand-new package** cannot publish through OIDC: npm only configures a trusted publisher for
+a name that already exists. Its first release goes out once through `bootstrap-publish.yml` with
+a short-lived token (restore that file from git history if it has been deleted; its header has
+the steps). After that, set `joegaudet/real-enums` / `release.yml` as the package's trusted
+publisher on npmjs.com.
 
-Merging to `main` with changesets pending opens a "Version Packages" PR; merging _that_
-publishes, with provenance, through `scripts/publish.mjs`. Publishing is OIDC; there is no
-`NPM_TOKEN`.
+Actions must be allowed to create pull requests (Settings → Actions → General), or the version
+PR cannot open.
 
 ## Changesets
 

@@ -4,7 +4,7 @@
 enums out of the cache.
 
 ```bash
-npm install real-enums @real-enums/urql
+npm install @real-enums/core @real-enums/urql
 ```
 
 ```ts

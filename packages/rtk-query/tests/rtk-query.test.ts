@@ -1,6 +1,6 @@
 import { configureStore } from '@reduxjs/toolkit'
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query'
-import { Enum } from 'real-enums'
+import { Enum } from '@real-enums/core'
 import { afterEach, expect, test, vi } from 'vitest'
 
 import { enumResponse, isSerializable } from '../src/index.js'

@@ -4,7 +4,7 @@
 wire values into enum instances.
 
 ```bash
-npm install real-enums @real-enums/tanstack-query
+npm install @real-enums/core @real-enums/tanstack-query
 ```
 
 ```ts

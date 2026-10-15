@@ -4,7 +4,7 @@
 as enum instances, typed.
 
 ```bash
-npm install real-enums @real-enums/swr
+npm install @real-enums/core @real-enums/swr
 ```
 
 ```ts

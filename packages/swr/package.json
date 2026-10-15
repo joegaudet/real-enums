@@ -37,14 +37,14 @@
     "test": "vitest run"
   },
   "peerDependencies": {
-    "real-enums": "workspace:^",
+    "@real-enums/core": "workspace:^",
     "swr": "^2.0.0"
   },
   "publishConfig": {
     "access": "public"
   },
   "devDependencies": {
-    "real-enums": "workspace:^",
+    "@real-enums/core": "workspace:^",
     "swr": "^2.5.1",
     "react": "^19.3.0",
     "react-dom": "^19.3.0",

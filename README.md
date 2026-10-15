@@ -9,7 +9,7 @@ React's data libraries.
 
 | Package                                                 | For                                                                                 |
 | ------------------------------------------------------- | ----------------------------------------------------------------------------------- |
-| [`real-enums`](packages/real-enums)                     | The `Enum` class, `@is()`, exhaustive `match`, codecs, `mapFields`, Standard Schema |
+| [`@real-enums/core`](packages/real-enums)               | The `Enum` class, `@is()`, exhaustive `match`, codecs, `mapFields`, Standard Schema |
 | [`@real-enums/warp-drive`](packages/warp-drive)         | WarpDrive schema records and ember-data Models                                      |
 | [`@real-enums/tanstack-query`](packages/tanstack-query) | TanStack Query `select`                                                             |
 | [`@real-enums/swr`](packages/swr)                       | SWR fetchers                                                                        |

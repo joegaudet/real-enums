@@ -6,6 +6,10 @@
 > urql. `Cls.match(value)` branches on a member with the compiler checking every member is
 > handled.
 
+Install the core package, `npm i @real-enums/core`, and import from `@real-enums/core`. The
+data-layer adapters are `@real-enums/warp-drive`, `@real-enums/tanstack-query`,
+`@real-enums/swr`, `@real-enums/rtk-query`, `@real-enums/apollo` and `@real-enums/urql`.
+
 ## Rules for writing code with real-enums
 
 1. Declare members with `Cls.of('value')`, never `new Cls('value')`. `of` gives each member
@@ -30,7 +34,7 @@
 ## Example
 
 ```ts
-import { Enum, is, isNot } from 'real-enums'
+import { Enum, is, isNot } from '@real-enums/core'
 
 export class OrderState extends Enum {
   static Pending = OrderState.of('pending')

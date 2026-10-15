@@ -38,14 +38,14 @@
     "test": "vitest run"
   },
   "peerDependencies": {
-    "real-enums": "workspace:^",
+    "@real-enums/core": "workspace:^",
     "@urql/exchange-graphcache": "^9.0.0"
   },
   "publishConfig": {
     "access": "public"
   },
   "devDependencies": {
-    "real-enums": "workspace:^",
+    "@real-enums/core": "workspace:^",
     "@urql/exchange-graphcache": "^9.0.2",
     "@urql/core": "^6.0.3",
     "graphql": "^16.14.2",

@@ -38,14 +38,14 @@
     "test": "vitest run"
   },
   "peerDependencies": {
-    "real-enums": "workspace:^",
+    "@real-enums/core": "workspace:^",
     "@warp-drive/core": "^5.8.0"
   },
   "publishConfig": {
     "access": "public"
   },
   "devDependencies": {
-    "real-enums": "workspace:^",
+    "@real-enums/core": "workspace:^",
     "@warp-drive/core": "^5.9.1"
   },
   "engines": {

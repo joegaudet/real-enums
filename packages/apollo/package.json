@@ -37,14 +37,14 @@
     "test": "vitest run"
   },
   "peerDependencies": {
-    "real-enums": "workspace:^",
+    "@real-enums/core": "workspace:^",
     "@apollo/client": "^4.0.0"
   },
   "publishConfig": {
     "access": "public"
   },
   "devDependencies": {
-    "real-enums": "workspace:^",
+    "@real-enums/core": "workspace:^",
     "@apollo/client": "^4.3.3",
     "graphql": "^16.14.2",
     "rxjs": "^7.8.2"

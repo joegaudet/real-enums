@@ -4,7 +4,7 @@ Enums that are real classes. A label, an icon, a CSS class, or "what comes next"
 the value instead of in an `if`/`else` ladder in every template that shows it.
 
 ```ts
-import { Enum, is, isNot } from 'real-enums'
+import { Enum, is, isNot } from '@real-enums/core'
 
 export class OrderState extends Enum {
   static Pending = OrderState.of('pending')
@@ -61,7 +61,7 @@ Site and live examples: **https://joegaudet.com/real-enums/**
 ## Install
 
 ```bash
-npm install real-enums
+npm install @real-enums/core
 ```
 
 Then add the adapter for your data layer, if there is one:

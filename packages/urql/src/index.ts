@@ -1,5 +1,5 @@
 import type { Resolver } from '@urql/exchange-graphcache'
-import type { Enum, EnumClass } from 'real-enums'
+import type { Enum, EnumClass } from '@real-enums/core'
 
 type Raw = string | null | undefined
 
