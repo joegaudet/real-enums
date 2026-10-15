@@ -1,4 +1,4 @@
-import { mapFields, type FieldMap } from 'real-enums'
+import { mapFields, type FieldMap } from '@real-enums/core'
 
 /**
  * Wraps an SWR fetcher so its data arrives as enum instances, typed:

@@ -1,5 +1,5 @@
 import { Type } from '@warp-drive/core/types/symbols'
-import { Enum } from 'real-enums'
+import { Enum } from '@real-enums/core'
 import { expect, test } from 'vitest'
 
 import { enumTransform, enumTransformation } from '../src/index.js'

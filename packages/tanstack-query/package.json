@@ -37,13 +37,13 @@
     "test": "vitest run"
   },
   "peerDependencies": {
-    "real-enums": "workspace:^"
+    "@real-enums/core": "workspace:^"
   },
   "publishConfig": {
     "access": "public"
   },
   "devDependencies": {
-    "real-enums": "workspace:^",
+    "@real-enums/core": "workspace:^",
     "@tanstack/query-core": "^5.104.2"
   },
   "engines": {

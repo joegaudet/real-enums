@@ -4,7 +4,7 @@
 enums out of the normalized cache.
 
 ```bash
-npm install real-enums @real-enums/apollo
+npm install @real-enums/core @real-enums/apollo
 ```
 
 ```ts

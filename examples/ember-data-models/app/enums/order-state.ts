@@ -1,4 +1,4 @@
-import { Enum, is, isNot } from 'real-enums'
+import { Enum, is, isNot } from '@real-enums/core'
 
 export class OrderState extends Enum {
   static Pending = new OrderState('pending')

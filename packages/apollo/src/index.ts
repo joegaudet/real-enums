@@ -1,5 +1,5 @@
 import type { FieldPolicy } from '@apollo/client'
-import type { Enum, EnumClass } from 'real-enums'
+import type { Enum, EnumClass } from '@real-enums/core'
 
 type Raw = string | null | undefined
 

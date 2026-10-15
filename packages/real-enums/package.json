@@ -1,5 +1,5 @@
 {
-  "name": "real-enums",
+  "name": "@real-enums/core",
   "version": "1.2.0",
   "description": "Enums that are real classes: labels, icons and predicates live on the value, not in a template.",
   "keywords": [

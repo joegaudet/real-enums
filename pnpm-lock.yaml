@@ -5,7 +5,7 @@ settings:
   excludeLinksFromLockfile: false
 
 overrides:
-  real-enums: workspace:*
+  '@real-enums/core': workspace:*
   '@real-enums/warp-drive': workspace:*
   '@real-enums/tanstack-query': workspace:*
   '@real-enums/swr': workspace:*
@@ -56,12 +56,12 @@ importers:
 
   examples/ember-data-models:
     dependencies:
+      '@real-enums/core':
+        specifier: workspace:*
+        version: link:../../packages/real-enums
       '@real-enums/warp-drive':
         specifier: workspace:*
         version: link:../../packages/warp-drive
-      real-enums:
-        specifier: workspace:*
-        version: link:../../packages/real-enums
     devDependencies:
       '@babel/core':
         specifier: ^7.29.7
@@ -189,12 +189,12 @@ importers:
 
   examples/ember-warp-drive:
     dependencies:
+      '@real-enums/core':
+        specifier: workspace:*
+        version: link:../../packages/real-enums
       '@real-enums/warp-drive':
         specifier: workspace:*
         version: link:../../packages/warp-drive
-      real-enums:
-        specifier: workspace:*
-        version: link:../../packages/real-enums
     devDependencies:
       '@babel/core':
         specifier: ^7.29.7
@@ -319,6 +319,9 @@ importers:
       '@real-enums/apollo':
         specifier: workspace:*
         version: link:../../packages/apollo
+      '@real-enums/core':
+        specifier: workspace:*
+        version: link:../../packages/real-enums
       graphql:
         specifier: ^16.14.2
         version: 16.14.2
@@ -328,9 +331,6 @@ importers:
       react-dom:
         specifier: ^19.3.0
         version: 19.3.0(react@19.3.0)
-      real-enums:
-        specifier: workspace:*
-        version: link:../../packages/real-enums
       rxjs:
         specifier: ^7.8.2
         version: 7.8.2
@@ -368,6 +368,9 @@ importers:
 
   examples/react-rtk-query:
     dependencies:
+      '@real-enums/core':
+        specifier: workspace:*
+        version: link:../../packages/real-enums
       '@real-enums/rtk-query':
         specifier: workspace:*
         version: link:../../packages/rtk-query
@@ -383,9 +386,6 @@ importers:
       react-redux:
         specifier: ^9.3.0
         version: 9.3.0(@types/react@19.3.0)(react@19.3.0)(redux@5.0.1)
-      real-enums:
-        specifier: workspace:*
-        version: link:../../packages/real-enums
     devDependencies:
       '@testing-library/dom':
         specifier: ^10.4.2
@@ -420,6 +420,9 @@ importers:
 
   examples/react-swr:
     dependencies:
+      '@real-enums/core':
+        specifier: workspace:*
+        version: link:../../packages/real-enums
       '@real-enums/swr':
         specifier: workspace:*
         version: link:../../packages/swr
@@ -429,9 +432,6 @@ importers:
       react-dom:
         specifier: ^19.3.0
         version: 19.3.0(react@19.3.0)
-      real-enums:
-        specifier: workspace:*
-        version: link:../../packages/real-enums
       swr:
         specifier: ^2.5.1
         version: 2.5.1(react@19.3.0)
@@ -469,6 +469,9 @@ importers:
 
   examples/react-tanstack-query:
     dependencies:
+      '@real-enums/core':
+        specifier: workspace:*
+        version: link:../../packages/real-enums
       '@real-enums/tanstack-query':
         specifier: workspace:*
         version: link:../../packages/tanstack-query
@@ -481,9 +484,6 @@ importers:
       react-dom:
         specifier: ^19.3.0
         version: 19.3.0(react@19.3.0)
-      real-enums:
-        specifier: workspace:*
-        version: link:../../packages/real-enums
     devDependencies:
       '@testing-library/dom':
         specifier: ^10.4.2
@@ -521,12 +521,12 @@ importers:
       '@apollo/client':
         specifier: ^4.3.3
         version: 4.3.3(graphql@16.14.2)(react-dom@19.3.0(react@19.3.0))(react@19.3.0)(rxjs@7.8.2)
+      '@real-enums/core':
+        specifier: workspace:*
+        version: link:../real-enums
       graphql:
         specifier: ^16.14.2
         version: 16.14.2
-      real-enums:
-        specifier: workspace:*
-        version: link:../real-enums
       rxjs:
         specifier: ^7.8.2
         version: 7.8.2
@@ -535,15 +535,18 @@ importers:
 
   packages/rtk-query:
     devDependencies:
+      '@real-enums/core':
+        specifier: workspace:*
+        version: link:../real-enums
       '@reduxjs/toolkit':
         specifier: ^2.13.0
         version: 2.13.0(react-redux@9.3.0(@types/react@19.3.0)(react@19.3.0)(redux@5.0.1))(react@19.3.0)
-      real-enums:
-        specifier: workspace:*
-        version: link:../real-enums
 
   packages/swr:
     devDependencies:
+      '@real-enums/core':
+        specifier: workspace:*
+        version: link:../real-enums
       '@testing-library/dom':
         specifier: ^10.4.1
         version: 10.4.2
@@ -559,24 +562,24 @@ importers:
       react-dom:
         specifier: ^19.3.0
         version: 19.3.0(react@19.3.0)
-      real-enums:
-        specifier: workspace:*
-        version: link:../real-enums
       swr:
         specifier: ^2.5.1
         version: 2.5.1(react@19.3.0)
 
   packages/tanstack-query:
     devDependencies:
+      '@real-enums/core':
+        specifier: workspace:*
+        version: link:../real-enums
       '@tanstack/query-core':
         specifier: ^5.104.2
         version: 5.104.2
-      real-enums:
-        specifier: workspace:*
-        version: link:../real-enums
 
   packages/urql:
     devDependencies:
+      '@real-enums/core':
+        specifier: workspace:*
+        version: link:../real-enums
       '@urql/core':
         specifier: ^6.0.3
         version: 6.0.3(graphql@16.14.2)
@@ -586,21 +589,18 @@ importers:
       graphql:
         specifier: ^16.14.2
         version: 16.14.2
-      real-enums:
-        specifier: workspace:*
-        version: link:../real-enums
       wonka:
         specifier: ^6.3.5
         version: 6.3.6
 
   packages/warp-drive:
     devDependencies:
+      '@real-enums/core':
+        specifier: workspace:*
+        version: link:../real-enums
       '@warp-drive/core':
         specifier: ^5.9.1
         version: 5.9.1(@babel/core@7.29.7(supports-color@7.2.0))(@glint/template@1.9.0)(supports-color@7.2.0)
-      real-enums:
-        specifier: workspace:*
-        version: link:../real-enums
 
 packages:
 
