@@ -533,6 +533,16 @@ body > footer a {
   color: inherit;
 }
 
+/* The row of sibling projects under the footer's own links. */
+body > footer .family {
+  margin: 0.5rem 0 0;
+}
+
+body > footer [aria-current='page'] {
+  font-weight: 600;
+  text-decoration: none;
+}
+
 /* Code blocks: one editor-style surface in both schemes. Pico pads the inner
    <code> and Prism pads the <pre>; only the <pre> pads here, so indents don't double. */
 pre,

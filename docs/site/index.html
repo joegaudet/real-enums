@@ -54,7 +54,9 @@
       <div class="container">
         <ul>
           <li class="brand">
-            <img src="logo.svg" alt="" width="28" height="28" /><strong>real-enums</strong>
+            <a href="https://joegaudet.com/" class="brand-link"
+              ><img src="logo.svg" alt="" width="28" height="28" /><strong>real-enums</strong></a
+            >
           </li>
         </ul>
         <ul>
@@ -440,7 +442,9 @@ statusText(OrderState.Returned) // undefined, and no one is told</code></pre>
           <code>@real-enums/warp-drive</code> has a Transformation for schema records and a
           transform for <code>@attr</code> on Models. Both turn the cached string into an enum on
           read and back into the string on save. Works with WarpDrive 5.8 and later, in Vite and
-          classic builds alike.
+          classic builds alike. Building forms?
+          <a href="https://joegaudet.com/ember-formwright/">Formwright</a> takes enum classes as
+          select options through <code>@ember-formwright/real-enums</code>.
         </p>
         <div class="install-block">
           <pre><code class="language-bash">npm i @real-enums/core @real-enums/warp-drive</code></pre>
@@ -787,6 +791,14 @@ const schema = realEnum(OrderState)</code></pre>
         <a href="llms.txt">llms.txt</a> ·
         <a href="https://github.com/joegaudet/real-enums/blob/main/CONTRIBUTING.md">Contributing</a>
       </small>
+      <p class="family">
+        <small>
+          More open source from <a href="https://joegaudet.com/">Joe Gaudet</a>:
+          <a href="https://joegaudet.com/harnessed/">harnessed</a> ·
+          <a href="https://joegaudet.com/real-enums/" aria-current="page">real-enums</a> ·
+          <a href="https://joegaudet.com/ember-formwright/">Formwright</a>
+        </small>
+      </p>
     </footer>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
