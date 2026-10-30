@@ -1,10 +1,10 @@
 import { Enum, is, isNot } from '@real-enums/core'
 
 export class OrderState extends Enum {
-  static Pending = new OrderState('pending')
-  static Shipped = new OrderState('shipped')
-  static Delivered = new OrderState('delivered')
-  static Cancelled = new OrderState('cancelled')
+  static Pending = OrderState.of('pending')
+  static Shipped = OrderState.of('shipped')
+  static Delivered = OrderState.of('delivered')
+  static Cancelled = OrderState.of('cancelled')
 
   // Ember compiles decorators (legacy semantics, via decorator-transforms), so `@is()` works
   // on a declared field. The name after `is` must match a static member.

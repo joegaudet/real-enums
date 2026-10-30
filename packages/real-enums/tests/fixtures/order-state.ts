@@ -3,10 +3,10 @@ import { Enum, is, isNot } from '../../src/index.js'
 // The OrderState shown in the README and on the site. docs.test.ts checks both still show
 // exactly this, and readme.test.ts runs it.
 export class OrderState extends Enum {
-  static Pending = new OrderState('pending')
-  static Shipped = new OrderState('shipped')
-  static Delivered = new OrderState('delivered')
-  static Cancelled = new OrderState('cancelled')
+  static Pending = OrderState.of('pending')
+  static Shipped = OrderState.of('shipped')
+  static Delivered = OrderState.of('delivered')
+  static Cancelled = OrderState.of('cancelled')
 
   @is() accessor isPending!: boolean
   @is() accessor isCancelled!: boolean

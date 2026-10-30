@@ -10,11 +10,11 @@
   },
   "dependencies": {
     "@apollo/client": "^4.3.3",
-    "@real-enums/apollo": "^2.0.0",
+    "@real-enums/apollo": "^2.1.0",
     "graphql": "^16.14.2",
     "react": "^19.3.0",
     "react-dom": "^19.3.0",
-    "@real-enums/core": "^2.0.0",
+    "@real-enums/core": "^2.1.0",
     "rxjs": "^7.8.2"
   },
   "devDependencies": {

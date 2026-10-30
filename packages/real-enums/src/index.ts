@@ -1,3 +1,5 @@
+import { matcher, type MatchOf, type Members } from './match.js'
+
 /**
  * Any subclass of {@link Enum}, as a value: `OrderState`, not `OrderState.Open`. Typed by its
  * prototype rather than its constructor, so a constructor with extra arguments, or a private
@@ -14,6 +16,9 @@ export interface EnumCodec<T extends Enum> {
   parse(raw: string | T | null | undefined): T | undefined
   serialize(value: T | string | null | undefined): string | null
 }
+
+// The values each class has declared with `of`.
+const declared = new WeakMap<object, Set<string>>()
 
 export class Enum extends String {
   readonly value: string
@@ -51,6 +56,31 @@ export class Enum extends String {
   static valueFor<T extends Enum>(this: EnumClass<T>, raw: string | T): T | undefined {
     const key = String(raw)
     return this.values.find((member: T) => member.value === key)
+  }
+
+  /**
+   * Declares a member: `static Pending = OrderState.of('pending')`. Same instance as `new`, but
+   * typed as its own member, which is what lets {@link Enum.match} track what is handled.
+   */
+  static of<T extends Enum, const V extends string, A extends unknown[]>(
+    this: new (value: string, ...args: A) => T,
+    value: V,
+    ...args: A
+  ): T & { readonly value: V } {
+    // Two members with one value share a type, so `match` would count either as both.
+    const seen = declared.get(this) ?? new Set<string>()
+    if (seen.has(value)) throw new Error(`${this.name} already has a member "${value}"`)
+    declared.set(this, seen.add(value))
+    return new this(value, ...args) as T & { readonly value: V }
+  }
+
+  /**
+   * Starts a match over the static members, checked by the compiler:
+   * `.when([Cls.A, Cls.B], fn)` handles members, `.exhaustive()` compiles only once every
+   * member is handled, and `.otherwise(fn)` is the catch-all.
+   */
+  static match<C, T extends Enum>(this: C & { prototype: T }, value: T): MatchOf<T, Members<C, T>> {
+    return matcher((this as { name?: string }).name ?? 'Enum', value) as MatchOf<T, Members<C, T>>
   }
 
   static codec<T extends Enum>(this: EnumClass<T>): EnumCodec<T> {
@@ -104,5 +134,6 @@ export function isNot(): PredicateDecorator {
   return predicate('isNot', false)
 }
 
+export type { Match, MatchOf, Members } from './match.js'
 export { mapFields, type FieldMap } from './map-fields.js'
 export { realEnum, type StandardSchemaResult, type StandardSchemaV1 } from './standard-schema.js'

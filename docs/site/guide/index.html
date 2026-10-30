@@ -1,0 +1,482 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>real-enums guide</title>
+    <meta
+      name="description"
+      content="The real-enums guide: declaring enums, predicates, exhaustive matching, data-layer adapters, validation and the API."
+    />
+    <link rel="canonical" href="https://joegaudet.com/real-enums/guide/" />
+    <link rel="alternate" type="text/plain" href="../llms.txt" title="llms.txt" />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/@picocss/pico@2.0.6/css/pico.min.css"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css"
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;800&display=swap"
+    />
+    <link rel="stylesheet" href="../site.css" />
+    <link rel="icon" href="../favicon.svg" type="image/svg+xml" />
+    <link rel="apple-touch-icon" href="../apple-touch-icon.png" />
+  </head>
+  <body>
+    <nav class="site-nav">
+      <div class="container">
+        <ul>
+          <li class="brand">
+            <a href="../" class="brand-link"
+              ><img src="../logo.svg" alt="" width="28" height="28" /><strong>real-enums</strong></a
+            >
+          </li>
+        </ul>
+        <ul>
+          <li><a href="./" aria-current="page">Guide</a></li>
+          <li class="wide-only"><a href="../#examples">Examples</a></li>
+          <li><a href="https://github.com/joegaudet/real-enums">GitHub</a></li>
+        </ul>
+      </div>
+    </nav>
+
+    <main class="container guide">
+      <aside class="guide-toc" aria-label="Guide contents">
+        <nav>
+          <p class="eyebrow">Getting started</p>
+          <ul>
+            <li><a href="#install">Install</a></li>
+            <li><a href="#define">Define an enum</a></li>
+          </ul>
+          <p class="eyebrow">Using enums</p>
+          <ul>
+            <li><a href="#behaviour">Behaviour on the value</a></li>
+            <li><a href="#predicates">Predicates</a></li>
+            <li><a href="#match">Exhaustive matching</a></li>
+          </ul>
+          <p class="eyebrow">Going further</p>
+          <ul>
+            <li><a href="#data-layers">Data layers</a></li>
+            <li><a href="#validation">Validation</a></li>
+            <li><a href="#agents">For AI agents</a></li>
+          </ul>
+          <p class="eyebrow">Reference</p>
+          <ul>
+            <li><a href="#api">API</a></li>
+          </ul>
+        </nav>
+      </aside>
+
+      <section id="install">
+        <p class="eyebrow">Getting started</p>
+        <h2>Install</h2>
+        <p>
+          One package for the enum itself, plus the adapter for your data layer if you have one.
+        </p>
+        <pre><code class="language-bash">npm i @real-enums/core</code></pre>
+        <div class="overflow-auto">
+          <table class="striped">
+            <thead>
+              <tr>
+                <th scope="col">Data layer</th>
+                <th scope="col">Package</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>WarpDrive / ember-data</td>
+                <td><code>@real-enums/warp-drive</code></td>
+              </tr>
+              <tr>
+                <td>TanStack Query</td>
+                <td><code>@real-enums/tanstack-query</code></td>
+              </tr>
+              <tr>
+                <td>SWR</td>
+                <td><code>@real-enums/swr</code></td>
+              </tr>
+              <tr>
+                <td>RTK Query</td>
+                <td><code>@real-enums/rtk-query</code></td>
+              </tr>
+              <tr>
+                <td>Apollo Client</td>
+                <td><code>@real-enums/apollo</code></td>
+              </tr>
+              <tr>
+                <td>urql (Graphcache)</td>
+                <td><code>@real-enums/urql</code></td>
+              </tr>
+              <tr>
+                <td>Anything else</td>
+                <td>
+                  <code>mapFields</code> / <code>codec()</code>, in <code>@real-enums/core</code>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <section id="define">
+        <p class="eyebrow">Getting started</p>
+        <h2>Define an enum</h2>
+        <p>
+          An enum is a class. Each value is a static member declared with
+          <code>Cls.of(value)</code>; everything else is an ordinary getter.
+        </p>
+        <pre><code class="language-typescript">import { Enum, is, isNot } from '@real-enums/core'
+
+export class OrderState extends Enum {
+  static Pending = OrderState.of('pending')
+  static Shipped = OrderState.of('shipped')
+  static Delivered = OrderState.of('delivered')
+  static Cancelled = OrderState.of('cancelled')
+
+  @is() accessor isPending!: boolean
+  @is() accessor isCancelled!: boolean
+  @isNot() accessor isNotCancelled!: boolean
+
+  get next(): OrderState | undefined {
+    return {
+      [OrderState.Pending.value]: OrderState.Shipped,
+      [OrderState.Shipped.value]: OrderState.Delivered,
+    }[this.value]
+  }
+
+  get advanceLabel(): string | undefined {
+    return {
+      [OrderState.Pending.value]: 'Ship',
+      [OrderState.Shipped.value]: 'Deliver',
+    }[this.value]
+  }
+
+  get className() {
+    return `badge badge--${this.value}`
+  }
+}
+</code></pre>
+        <p>
+          Members are singletons, so <code>===</code> works. They extend <code>String</code>, so
+          they interpolate as the raw value and <code>JSON.stringify</code> writes it.
+        </p>
+        <pre><code class="language-typescript">OrderState.values // [Pending, Shipped, Delivered, Cancelled]
+OrderState.valueFor('shipped') // OrderState.Shipped
+OrderState.valueFor('archived') // undefined
+OrderState.Shipped.label // 'Shipped'
+JSON.stringify({ state: OrderState.Shipped }) // '{"state":"shipped"}'</code></pre>
+        <p>
+          <code>new OrderState('pending')</code> makes the same instance, but its type is plain
+          <code>OrderState</code>, so <a href="#match"><code>match</code></a> cannot tell it from
+          the other members. Use <code>of</code>.
+        </p>
+      </section>
+
+      <section id="behaviour">
+        <p class="eyebrow">Using enums</p>
+        <h2>Behaviour on the value</h2>
+        <p>
+          The label, the badge class and what comes next are getters, so templates ask the value
+          instead of repeating an <code>if</code> ladder wherever the state appears.
+        </p>
+        <pre><code class="language-handlebars">&lt;span class={{order.state.className}}&gt;{{order.state.label}}&lt;/span&gt;
+{{#if order.state.advanceLabel}}
+  &lt;button&gt;{{order.state.advanceLabel}}&lt;/button&gt;
+{{/if}}
+
+{{#each OrderState.values as |state|}}
+  &lt;option value={{state.value}}&gt;{{state.label}}&lt;/option&gt;
+{{/each}}</code></pre>
+        <p>
+          A lookup that only some members answer, like <code>next</code>, is a table keyed by
+          <code>value</code>. When every member needs an answer, use
+          <a href="#match"><code>match</code></a
+          >, so a new member cannot be forgotten.
+        </p>
+      </section>
+
+      <section id="predicates">
+        <p class="eyebrow">Using enums</p>
+        <h2>Predicates</h2>
+        <p>
+          <code>@is()</code> and <code>@isNot()</code> are booleans named after a static member. A
+          name with no matching member throws on first read rather than always answering
+          <code>false</code>.
+        </p>
+        <pre><code class="language-typescript">// Standard decorators: TypeScript 5+, esbuild, Babel's 2023-11 plugin.
+@is() accessor isPending!: boolean
+
+// Ember's legacy decorators (decorator-transforms).
+@is() declare isPending: boolean</code></pre>
+      </section>
+
+      <section id="match">
+        <p class="eyebrow">Using enums</p>
+        <h2>Exhaustive matching</h2>
+        <p>
+          <code>Cls.match(value)</code> branches on a member with the compiler checking that every
+          member is handled, like a Scala <code>match</code> on a sealed type. Cases are the static
+          members themselves, never strings, and one case can take several.
+        </p>
+        <pre><code class="language-typescript">const statusText = (state: OrderState) =&gt;
+  OrderState.match(state)
+    .when([OrderState.Pending, OrderState.Shipped], () =&gt; 'In progress')
+    .when([OrderState.Delivered], () =&gt; 'Done')
+    .when([OrderState.Cancelled], () =&gt; 'Cancelled')
+    .exhaustive()
+
+const canEdit = (state: OrderState) =&gt;
+  OrderState.match(state)
+    .when([OrderState.Pending], () =&gt; true)
+    .otherwise(() =&gt; false)</code></pre>
+        <h3>What the compiler catches</h3>
+        <div class="overflow-auto">
+          <table class="striped">
+            <thead>
+              <tr>
+                <th scope="col">Mistake</th>
+                <th scope="col">What <code>tsc</code> says</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>A member is not handled</td>
+                <td>
+                  <code>.exhaustive()</code> is not callable; its type is
+                  <code>{ unhandled: … }</code>, naming the members left.
+                </td>
+              </tr>
+              <tr>
+                <td>A member is handled twice</td>
+                <td>
+                  The second <code>.when</code> rejects it: only unhandled members are accepted.
+                </td>
+              </tr>
+              <tr>
+                <td>A string instead of a member</td>
+                <td>Rejected: cases are members.</td>
+              </tr>
+              <tr>
+                <td>A member declared with <code>new</code></td>
+                <td>
+                  <code>.match()</code> returns an error type telling you to declare members with
+                  <code>Cls.of()</code>.
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <p>
+          Adding a member breaks every <code>.exhaustive()</code> on that enum until it is handled,
+          which is the point. <code>.otherwise(fn)</code> is the catch-all and turns the check off
+          for that match. The first <code>.when</code> that lists the value wins, and its handler
+          gets the value, typed as the members it listed.
+        </p>
+        <h3>Why not <code>if</code> or <code>switch</code>?</h3>
+        <p>
+          TypeScript narrows <code>===</code> only for literal types like strings, not for objects,
+          so an <code>if</code> chain or <code>switch</code> over members is never narrowed, and no
+          lint rule can tell a case is missing. <code>match</code> gets each member its own type
+          from <code>of</code> and tracks which are left itself.
+        </p>
+        <h3>Where it is checked</h3>
+        <p>
+          In <code>tsc</code>. Vite and Babel strip types without checking them, so run
+          <code>tsc --noEmit</code> in CI. Plain JavaScript and templates get the runtime only,
+          where <code>.exhaustive()</code> throws for a value no case listed. A value typed
+          <code>any</code> skips the check.
+        </p>
+        <h3>Limits</h3>
+        <ul>
+          <li>
+            TypeScript types are structural, so a member of a subclass of the enum type-checks as
+            one of its members. <code>.exhaustive()</code> throws for it at runtime.
+          </li>
+          <li>
+            <code>of</code> needs a public constructor. It passes extra constructor arguments
+            through (<code>Icon.of('open', '🟢')</code>), but an enum with a
+            <code>private constructor</code> declares members with <code>new</code> and cannot use
+            <code>match</code>.
+          </li>
+          <li>
+            <code>of</code> throws if the class already has a member with that value, since two
+            members with one value would share a type.
+          </li>
+        </ul>
+      </section>
+
+      <section id="data-layers">
+        <p class="eyebrow">Going further</p>
+        <h2>Data layers</h2>
+        <p>
+          Your API sends strings. Each adapter turns them into members on the way in and back into
+          strings on the way out, and is a few lines over one shared mapper.
+        </p>
+        <ul>
+          <li>
+            <strong>Ember:</strong> a WarpDrive Transformation for schema records and a transform
+            for <code>@attr</code> on Models. <a href="../#ember">Setup</a>.
+          </li>
+          <li>
+            <strong>React:</strong> TanStack Query <code>select</code>, SWR fetchers, RTK Query
+            <code>transformResponse</code>, Apollo field policies and urql resolvers.
+            <a href="../#react">Setup</a>.
+          </li>
+        </ul>
+        <p>Anywhere else, map the fields yourself:</p>
+        <pre><code class="language-typescript">import { mapFields } from '@real-enums/core'
+
+// Dotted paths; arrays are transparent at the root, along the path and at the leaf.
+const orders = mapFields&lt;Order[]&gt;(json, { state: OrderState, 'lines.status': LineStatus })
+
+// One field, either way. Unknown and missing values parse to undefined.
+const { parse, serialize } = OrderState.codec()</code></pre>
+      </section>
+
+      <section id="validation">
+        <p class="eyebrow">Going further</p>
+        <h2>Validation</h2>
+        <p>
+          <code>realEnum(Cls)</code> is a strict Standard Schema v1 validator, for anything that
+          takes one: TanStack Form, tRPC, Hono and others. Anything but one of the enum's values or
+          members is an issue.
+        </p>
+        <pre><code class="language-typescript">import { realEnum } from '@real-enums/core'
+
+realEnum(OrderState)['~standard'].validate('pending') // { value: OrderState.Pending }
+realEnum(OrderState)['~standard'].validate('nope') // { issues: [...] }</code></pre>
+      </section>
+
+      <section id="agents">
+        <p class="eyebrow">Going further</p>
+        <h2>For AI agents</h2>
+        <p>
+          If an AI coding agent writes code against real-enums, point it at
+          <a href="../llms.txt"><code>llms.txt</code></a
+          >, the same rules in plain text. The short version:
+        </p>
+        <ol>
+          <li>Declare members with <code>Cls.of('value')</code>, never <code>new</code>.</li>
+          <li>
+            When every member needs an answer, use <code>Cls.match(value)</code> and end with
+            <code>.exhaustive()</code>. Not <code>if</code>/<code>else</code>, not
+            <code>switch</code>, not a lookup table. Tables keyed by <code>value</code> are for
+            lookups only some members answer, like <code>next</code>.
+          </li>
+          <li>
+            Cases are static members (<code>OrderState.Pending</code>), never strings
+            (<code>'pending'</code>).
+          </li>
+          <li>
+            Use <code>.otherwise()</code> only when a fallback is truly intended; it turns the check
+            off.
+          </li>
+          <li>
+            Compare members with <code>===</code> or a predicate like <code>isPending</code>, not
+            with their string value.
+          </li>
+          <li>
+            Fix a <code>match</code> type error by handling the member it names, never with a cast
+            or <code>@ts-expect-error</code>.
+          </li>
+        </ol>
+      </section>
+
+      <section id="api">
+        <p class="eyebrow">Reference</p>
+        <h2>API</h2>
+        <div class="overflow-auto">
+          <table class="striped">
+            <thead>
+              <tr>
+                <th scope="col">Member</th>
+                <th scope="col">What it does</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <th scope="row"><code>Cls.of(value)</code></th>
+                <td>Declares a member, typed as that member alone.</td>
+              </tr>
+              <tr>
+                <th scope="row"><code>Cls.match(value)</code></th>
+                <td>
+                  An exhaustive match: <code>.when([members], fn)</code>,
+                  <code>.exhaustive()</code>, <code>.otherwise(fn)</code>.
+                </td>
+              </tr>
+              <tr>
+                <th scope="row"><code>value</code>, <code>label</code>, <code>id</code></th>
+                <td>
+                  The raw string; it capitalized (override it); the instance itself, for option
+                  values in templates.
+                </td>
+              </tr>
+              <tr>
+                <th scope="row"><code>Cls.values</code></th>
+                <td>Every static member, in declaration order.</td>
+              </tr>
+              <tr>
+                <th scope="row"><code>Cls.valueFor(raw)</code></th>
+                <td>The member for a raw value, or <code>undefined</code>. Takes a member too.</td>
+              </tr>
+              <tr>
+                <th scope="row"><code>@is()</code>, <code>@isNot()</code></th>
+                <td>Predicates named after a static member.</td>
+              </tr>
+              <tr>
+                <th scope="row"><code>Cls.codec()</code></th>
+                <td>
+                  <code>{ parse, serialize }</code>, lenient: unknown values parse to
+                  <code>undefined</code>.
+                </td>
+              </tr>
+              <tr>
+                <th scope="row"><code>mapFields(data, map)</code></th>
+                <td>A copy of <code>data</code> with dotted paths mapped to members.</td>
+              </tr>
+              <tr>
+                <th scope="row"><code>realEnum(Cls)</code></th>
+                <td>A strict Standard Schema v1 validator.</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <p>
+          Every detail is in the
+          <a href="https://github.com/joegaudet/real-enums/tree/main/packages/real-enums#readme"
+            >package README</a
+          >.
+        </p>
+      </section>
+    </main>
+
+    <footer class="container">
+      <small>
+        MIT © Joe Gaudet · <a href="../">Home</a> ·
+        <a href="https://github.com/joegaudet/real-enums#readme">README</a> ·
+        <a href="../llms.txt">llms.txt</a>
+      </small>
+      <p class="family">
+        <small>
+          More open source from <a href="https://joegaudet.com/">Joe Gaudet</a>:
+          <a href="https://joegaudet.com/harnessed/">harnessed</a> ·
+          <a href="https://joegaudet.com/real-enums/" aria-current="page">real-enums</a> ·
+          <a href="https://joegaudet.com/ember-formwright/">Formwright</a>
+        </small>
+      </p>
+    </footer>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-typescript.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-bash.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-markup-templating.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-handlebars.min.js"></script>
+  </body>
+</html>

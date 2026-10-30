@@ -74,3 +74,25 @@ test('realEnum', () => {
     issues: [{ message: 'Expected one of: pending, shipped, delivered, cancelled' }],
   })
 })
+
+test('match: grouped cases, exhaustive, and the otherwise catch-all', () => {
+  const statusText = (state: OrderState) =>
+    OrderState.match(state)
+      .when([OrderState.Pending, OrderState.Shipped], () => 'In progress')
+      .when([OrderState.Delivered], () => 'Done')
+      .when([OrderState.Cancelled], () => 'Cancelled')
+      .exhaustive()
+
+  const canEdit = (state: OrderState) =>
+    OrderState.match(state)
+      .when([OrderState.Pending], () => true)
+      .otherwise(() => false)
+
+  expect(OrderState.values.map(statusText)).toEqual([
+    'In progress',
+    'In progress',
+    'Done',
+    'Cancelled',
+  ])
+  expect(OrderState.values.map(canEdit)).toEqual([true, false, false, false])
+})

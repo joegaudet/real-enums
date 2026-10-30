@@ -7,10 +7,10 @@ the value instead of in an `if`/`else` ladder in every template that shows it.
 import { Enum, is, isNot } from '@real-enums/core'
 
 export class OrderState extends Enum {
-  static Pending = new OrderState('pending')
-  static Shipped = new OrderState('shipped')
-  static Delivered = new OrderState('delivered')
-  static Cancelled = new OrderState('cancelled')
+  static Pending = OrderState.of('pending')
+  static Shipped = OrderState.of('shipped')
+  static Delivered = OrderState.of('delivered')
+  static Cancelled = OrderState.of('cancelled')
 
   @is() accessor isPending!: boolean
   @is() accessor isCancelled!: boolean
@@ -80,7 +80,7 @@ Then add the adapter for your data layer, if there is one:
 
 ### `class Enum`
 
-Extend it and declare each value as a static member. Instances are singletons, so `===`
+Extend it and declare each value as a static member with `Cls.of(value)`. Instances are singletons, so `===`
 works, and they extend `String`, so they compare loosely with the raw value (`==`),
 interpolate as it, and `JSON.stringify` writes it.
 
@@ -92,6 +92,8 @@ interpolate as it, and `JSON.stringify` writes it.
 | `Cls.values`        | Every static instance, in declaration order.                                                                           |
 | `Cls.valueFor(raw)` | The instance for a raw value, or `undefined`. Passing an instance returns it.                                          |
 | `Cls.codec()`       | `{ parse, serialize }` for adapters (below).                                                                           |
+| `Cls.of(value)`     | Declares a member. The same instance `new` makes, typed as that member alone, which `match` needs.                     |
+| `Cls.match(value)`  | A match over the members that the compiler checks for exhaustiveness (below).                                          |
 
 `values` is a getter so templates can read it, and TypeScript cannot give a static getter a
 per-subclass type, so it is `any[]`. Annotate where it matters:
@@ -105,13 +107,13 @@ a static member; a typo throws on first read instead of always answering `false`
 ```ts
 // Standard (TC39) decorators: TypeScript 5+, Babel's 2023-11 plugin, esbuild.
 class OrderState extends Enum {
-  static Pending = new OrderState('pending')
+  static Pending = OrderState.of('pending')
   @is() accessor isPending!: boolean
 }
 
 // Legacy decorators: what every Ember app compiles with (decorator-transforms).
 class OrderState extends Enum {
-  static Pending = new OrderState('pending')
+  static Pending = OrderState.of('pending')
   @is() declare isPending: boolean
 }
 ```
@@ -119,6 +121,52 @@ class OrderState extends Enum {
 Both forms work with the same import. Vite 8 does not lower decorators on its own; in a
 plain Vite app either add a decorator transform or write the getter by hand:
 `get isPending() { return this === OrderState.Pending }`.
+
+### `match()`
+
+Branch on a value with the compiler checking that every member is handled, like a Scala
+`match` on a sealed type. Cases are the static members themselves, never strings, and one
+case can take several.
+
+```ts
+const statusText = (state: OrderState) =>
+  OrderState.match(state)
+    .when([OrderState.Pending, OrderState.Shipped], () => 'In progress')
+    .when([OrderState.Delivered], () => 'Done')
+    .when([OrderState.Cancelled], () => 'Cancelled')
+    .exhaustive()
+
+const canEdit = (state: OrderState) =>
+  OrderState.match(state)
+    .when([OrderState.Pending], () => true)
+    .otherwise(() => false)
+```
+
+| Mistake                                         | What `tsc` says                                                            |
+| ----------------------------------------------- | -------------------------------------------------------------------------- |
+| A member is not handled                         | `.exhaustive()` is not callable; its type is `{ unhandled: … }`, naming it |
+| A member is handled twice                       | the second `.when` rejects it: only unhandled members are accepted         |
+| A string instead of a member                    | rejected: cases are members                                                |
+| A member is declared with `new`, not `Cls.of()` | `.match()` returns an error type telling you to use `Cls.of()`             |
+
+Adding a member breaks every `.exhaustive()` on that enum until it is handled. `.otherwise(fn)`
+is the catch-all and turns the check off for that match. The first `.when` listing the value
+wins.
+
+The checking happens in `tsc`: plain JavaScript and templates get the runtime only, where
+`.exhaustive()` throws for a value no case listed. An `if`/`else` chain or `switch` over
+members is not checked at all, because TypeScript narrows `===` only for literal types, not
+objects; use `match`.
+
+Limits:
+
+- Types are structural, so a member of a subclass of the enum type-checks as one of its
+  members; `.exhaustive()` throws for it at runtime.
+- `of` passes extra constructor arguments through (`Icon.of('open', '🟢')`) but needs a
+  public constructor. An enum with a `private constructor` declares members with `new` and
+  cannot use `match`.
+- `of` throws if the class already has a member with that value: two members with one value
+  would share a type.
 
 ### `codec()`
 
@@ -167,9 +215,17 @@ realEnum(OrderState)['~standard'].validate('nope') // { issues: [{ message: 'Exp
   matching static member.
 - `label` no longer depends on `inflection`; it capitalizes the first letter and lower-cases
   the rest, which is what `inflection.capitalize` did.
-- New: `codec()`, `mapFields`, `realEnum`, and the adapter packages.
+- New: `Cls.of()` and `Cls.match()`, `codec()`, `mapFields`, `realEnum`, and the adapter
+  packages. Members declared with `new` still work everywhere except `match`.
 - The packages ship compiled ESM with declarations, instead of a `.ts` entry point. ESM only:
   Vite, Embroider and Node 22's `require(esm)` all load it.
+
+## Writing it with an AI agent
+
+Point the agent at **https://joegaudet.com/real-enums/llms.txt**. The rules that matter most:
+declare members with `Cls.of()`, branch with `Cls.match(...).exhaustive()` instead of
+`if`/`switch` over members, use members as cases (never strings), and fix a `match` type error
+by handling the member it names, not with a cast.
 
 ## License
 

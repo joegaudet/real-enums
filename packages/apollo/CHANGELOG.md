@@ -1,5 +1,12 @@
 # @real-enums/apollo
 
+## 2.1.0
+
+### Patch Changes
+
+- Updated dependencies [8191764]
+  - @real-enums/core@2.1.0
+
 ## 2.0.0
 
 ### Major Changes

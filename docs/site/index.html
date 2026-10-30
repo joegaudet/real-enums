@@ -46,6 +46,7 @@
     />
     <link rel="stylesheet" href="site.css" />
     <link rel="icon" href="favicon.svg" type="image/svg+xml" />
+    <link rel="alternate" type="text/plain" href="llms.txt" title="llms.txt" />
     <link rel="apple-touch-icon" href="apple-touch-icon.png" />
   </head>
   <body>
@@ -53,11 +54,14 @@
       <div class="container">
         <ul>
           <li class="brand">
-            <img src="logo.svg" alt="" width="28" height="28" /><strong>real-enums</strong>
+            <a href="https://joegaudet.com/" class="brand-link"
+              ><img src="logo.svg" alt="" width="28" height="28" /><strong>real-enums</strong></a
+            >
           </li>
         </ul>
         <ul>
           <li class="wide-only"><a href="#why">Why</a></li>
+          <li><a href="guide/">Guide</a></li>
           <li><a href="#ember">Ember</a></li>
           <li><a href="#react">React</a></li>
           <li class="wide-only"><a href="#examples">Examples</a></li>
@@ -334,16 +338,16 @@
         <p class="eyebrow">Define one</p>
         <h2>An enum is a class with static members</h2>
         <p>
-          Each value is a static instance. Everything else is an ordinary getter, so it can be as
-          rich as the domain needs.
+          Each value is a static instance, declared with <code>Cls.of(value)</code>. Everything else
+          is an ordinary getter, so it can be as rich as the domain needs.
         </p>
         <pre><code class="language-typescript">import { Enum, is, isNot } from '@real-enums/core'
 
 export class OrderState extends Enum {
-  static Pending = new OrderState('pending')
-  static Shipped = new OrderState('shipped')
-  static Delivered = new OrderState('delivered')
-  static Cancelled = new OrderState('cancelled')
+  static Pending = OrderState.of('pending')
+  static Shipped = OrderState.of('shipped')
+  static Delivered = OrderState.of('delivered')
+  static Cancelled = OrderState.of('cancelled')
 
   @is() accessor isPending!: boolean
   @is() accessor isCancelled!: boolean
@@ -381,6 +385,56 @@ JSON.stringify({ state: OrderState.Shipped }) // '{"state":"shipped"}'</code></p
         </p>
       </section>
 
+      <section id="match">
+        <p class="eyebrow">Branch on it</p>
+        <h2>Handle every case, or it doesn't compile</h2>
+        <p>
+          <code>match</code> is checked by the compiler, like Scala's <code>match</code> on a sealed
+          type. Cases are the static members, one case can take several, and
+          <code>.otherwise()</code> is the catch-all.
+        </p>
+        <p>Say returns become a state:</p>
+        <pre><code class="language-typescript">static Returned = OrderState.of('returned')</code></pre>
+        <div class="grid">
+          <article>
+            <header>Before: a <code>switch</code> that still compiles</header>
+            <pre><code class="language-typescript">const statusText = (state: OrderState) =&gt; {
+  switch (state) {
+    case OrderState.Pending:
+    case OrderState.Shipped:
+      return 'In progress'
+    case OrderState.Delivered:
+      return 'Done'
+    case OrderState.Cancelled:
+      return 'Cancelled'
+  }
+}
+
+statusText(OrderState.Returned) // undefined, and no one is told</code></pre>
+          </article>
+          <article>
+            <header>After: a <code>match</code> that won't, until it's handled</header>
+            <pre><code class="language-typescript">const statusText = (state: OrderState) =&gt;
+  OrderState.match(state)
+    .when([OrderState.Pending, OrderState.Shipped], () =&gt; 'In progress')
+    .when([OrderState.Delivered], () =&gt; 'Done')
+    .when([OrderState.Cancelled], () =&gt; 'Cancelled')
+    .exhaustive()</code></pre>
+            <pre><code class="language-plaintext">error TS2349: This expression is not callable.
+  Type '{ unhandled: OrderState &amp; { readonly value: "returned"; }; }'
+  has no call signatures.</code></pre>
+            <p>
+              The error names the member left out. Add
+              <code>.when([OrderState.Returned], () =&gt; 'Returned')</code> and it compiles.
+            </p>
+          </article>
+        </div>
+        <p>
+          A member handled twice, or a string where a member belongs, is a type error too. More in
+          the <a href="guide/#match">guide</a>.
+        </p>
+      </section>
+
       <section id="ember">
         <p class="eyebrow">Ember</p>
         <h2>WarpDrive and ember-data</h2>
@@ -388,7 +442,9 @@ JSON.stringify({ state: OrderState.Shipped }) // '{"state":"shipped"}'</code></p
           <code>@real-enums/warp-drive</code> has a Transformation for schema records and a
           transform for <code>@attr</code> on Models. Both turn the cached string into an enum on
           read and back into the string on save. Works with WarpDrive 5.8 and later, in Vite and
-          classic builds alike.
+          classic builds alike. Building forms?
+          <a href="https://joegaudet.com/ember-formwright/">Formwright</a> takes enum classes as
+          select options through <code>@ember-formwright/real-enums</code>.
         </p>
         <div class="install-block">
           <pre><code class="language-bash">npm i @real-enums/core @real-enums/warp-drive</code></pre>
@@ -659,6 +715,19 @@ const schema = realEnum(OrderState)</code></pre>
             </thead>
             <tbody>
               <tr>
+                <th scope="row"><code>Cls.of(value)</code></th>
+                <td>
+                  Declares a member, typed as that member alone, which <code>match</code> needs.
+                </td>
+              </tr>
+              <tr>
+                <th scope="row"><code>Cls.match(value)</code></th>
+                <td>
+                  A match the compiler checks: <code>.when([members], fn)</code>, then
+                  <code>.exhaustive()</code> or the <code>.otherwise(fn)</code> catch-all.
+                </td>
+              </tr>
+              <tr>
                 <th scope="row"><code>value</code>, <code>label</code>, <code>id</code></th>
                 <td>
                   The raw string; it capitalized (override it); the instance itself, for option
@@ -704,10 +773,12 @@ const schema = realEnum(OrderState)</code></pre>
           </table>
         </div>
         <p>
-          Full details in the
+          Walked through in the <a href="guide/">guide</a>, with every detail in the
           <a href="https://github.com/joegaudet/real-enums/tree/main/packages/real-enums#readme"
             >package README</a
-          >, including upgrading from 1.x.
+          >, including upgrading from 1.x. Writing code with an AI agent? Point it at
+          <a href="llms.txt"><code>llms.txt</code></a
+          >.
         </p>
       </section>
     </main>
@@ -715,9 +786,19 @@ const schema = realEnum(OrderState)</code></pre>
     <footer class="container">
       <small>
         MIT © Joe Gaudet ·
+        <a href="guide/">Guide</a> ·
         <a href="https://github.com/joegaudet/real-enums#readme">README</a> ·
+        <a href="llms.txt">llms.txt</a> ·
         <a href="https://github.com/joegaudet/real-enums/blob/main/CONTRIBUTING.md">Contributing</a>
       </small>
+      <p class="family">
+        <small>
+          More open source from <a href="https://joegaudet.com/">Joe Gaudet</a>:
+          <a href="https://joegaudet.com/harnessed/">harnessed</a> ·
+          <a href="https://joegaudet.com/real-enums/" aria-current="page">real-enums</a> ·
+          <a href="https://joegaudet.com/ember-formwright/">Formwright</a>
+        </small>
+      </p>
     </footer>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
