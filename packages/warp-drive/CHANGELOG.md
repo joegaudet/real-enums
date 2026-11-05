@@ -1,5 +1,18 @@
 # @real-enums/warp-drive
 
+## 2.2.0
+
+### Minor Changes
+
+- 27dae62: `@real-enums/warp-drive` is now a v2 Ember addon that adds one `enum` transform to the app:
+  `@attr<EnumTransform>('enum', { enum: OrderState })` on a Model needs no transform file. For
+  schema records, `enumTransformations({ 'order-state': OrderState })` registers every enum in
+  one line. `enumTransform` and `enumTransformation` still work.
+
+### Patch Changes
+
+- @real-enums/core@2.2.0
+
 ## 2.1.0
 
 ### Patch Changes

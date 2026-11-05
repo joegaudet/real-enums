@@ -1,6 +1,6 @@
 {
   "name": "@real-enums/warp-drive",
-  "version": "2.1.0",
+  "version": "2.2.0",
   "description": "real-enums for WarpDrive and ember-data: one @attr(\"enum\") transform for every enum, and schema Transformations.",
   "keywords": [
     "ember-addon",
