@@ -14,6 +14,8 @@
     "packages/*/vitest.config.ts",
     "packages/*/tests/**/*.ts",
     "packages/*/tests/**/*.tsx",
-    "scripts/*.mjs"
+    "scripts/*.mjs",
+    "packages/*/addon-main.cjs",
+    "packages/*/app/**/*.js"
   ]
 }

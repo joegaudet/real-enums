@@ -30,6 +30,11 @@ data-layer adapters are `@real-enums/warp-drive`, `@real-enums/tanstack-query`,
    never with a cast, `any`, `@ts-ignore` or `@ts-expect-error`.
 8. Raw strings from an API become members through the data layer's adapter, or
    `mapFields`/`Cls.codec()`. Do not call `Cls.valueFor` by hand in every component.
+9. In Ember, a Model attribute is `@attr<EnumTransform>('enum', { enum: OrderState })`.
+   `@real-enums/warp-drive` adds the `enum` transform to the app, so do not write a transform
+   file for each enum. For WarpDrive schema records, register the enums once with
+   `transformations: enumTransformations({ 'order-state': OrderState })` and give the field
+   `type: 'order-state'`; schemas stay JSON, so never put the class in a field's options.
 
 ## Example
 

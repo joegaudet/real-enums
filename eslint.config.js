@@ -37,6 +37,9 @@ export default tseslint.config(
       'packages/*/tests/**/*.ts',
       'packages/*/tests/**/*.tsx',
       'scripts/*.mjs',
+      // The Ember addon's entry points: plain JS that Ember's build loads.
+      'packages/*/addon-main.cjs',
+      'packages/*/app/**/*.js',
     ],
     languageOptions: {
       parserOptions: {
@@ -45,6 +48,15 @@ export default tseslint.config(
         tsconfigRootDir: import.meta.dirname,
       },
     },
+  },
+  {
+    // ember-cli loads addon-main.cjs with require(), so it is CommonJS.
+    files: ['packages/*/addon-main.cjs'],
+    languageOptions: {
+      sourceType: 'commonjs',
+      globals: { require: 'readonly', module: 'writable', __dirname: 'readonly' },
+    },
+    rules: { '@typescript-eslint/no-require-imports': 'off' },
   },
   {
     files: ['scripts/*.mjs'],
