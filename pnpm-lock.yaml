@@ -594,6 +594,10 @@ importers:
         version: 6.3.6
 
   packages/warp-drive:
+    dependencies:
+      '@embroider/addon-shim':
+        specifier: ^1.11.0
+        version: 1.11.0
     devDependencies:
       '@real-enums/core':
         specifier: workspace:*
@@ -1369,6 +1373,10 @@ packages:
 
   '@embroider/addon-shim@1.10.3':
     resolution: {integrity: sha512-GYbaiC1v9inbiwVg5s+Sd14Jc66NYxg23mEOocgWAZFCtOfhMnRLaLAA6SytW76myVVYImGHX5PFK4PVuH2yng==}
+    engines: {node: 12.* || 14.* || >= 16}
+
+  '@embroider/addon-shim@1.11.0':
+    resolution: {integrity: sha512-vXjhIOtvrns9IBFlgEN1imSeXtuVIlLypaDexu7xzsvB4Ef6yruhH33DNd9OmO0nXIB4SbwdkIwEsLYnhrujqA==}
     engines: {node: 12.* || 14.* || >= 16}
 
   '@embroider/compat@4.1.27':
@@ -7285,6 +7293,8 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
+  '@embroider/addon-shim@1.11.0': {}
+
   '@embroider/compat@4.1.27(@embroider/core@4.6.9(@glint/template@1.9.0)(supports-color@7.2.0))(@glint/template@1.9.0)(supports-color@7.2.0)':
     dependencies:
       '@babel/code-frame': 7.29.7
@@ -8392,7 +8402,7 @@ snapshots:
 
   '@warp-drive/build-config@5.9.1(@babel/core@7.29.7(supports-color@7.2.0))(@glint/template@1.9.0)(supports-color@7.2.0)':
     dependencies:
-      '@embroider/addon-shim': 1.10.3(supports-color@7.2.0)
+      '@embroider/addon-shim': 1.11.0
       '@embroider/macros': 1.21.3(@babel/core@7.29.7(supports-color@7.2.0))(@glint/template@1.9.0)(supports-color@7.2.0)
       babel-import-util: 3.0.1
       babel-plugin-debug-macros: 2.0.0(@babel/core@7.29.7(supports-color@7.2.0))

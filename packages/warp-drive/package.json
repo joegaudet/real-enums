@@ -63,5 +63,8 @@
     "app-js": {
       "./transforms/enum.js": "./app/transforms/enum.js"
     }
+  },
+  "dependencies": {
+    "@embroider/addon-shim": "^1.11.0"
   }
 }

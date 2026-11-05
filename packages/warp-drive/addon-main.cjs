@@ -1,6 +1,6 @@
 'use strict'
 
 // Lets a classic ember-cli build load this v2 addon. Embroider reads `ember-addon` directly.
-const { addonShim } = require('@warp-drive/core/addon-shim.cjs')
+const { addonV1Shim } = require('@embroider/addon-shim')
 
-module.exports = addonShim(__dirname)
+module.exports = addonV1Shim(__dirname)
