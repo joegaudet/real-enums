@@ -34,6 +34,10 @@ saved.
 Legacy transforms run in the serializer, so data has to arrive through an adapter request or
 `store.pushPayload`. A raw `store.push` skips serializers and leaves the strings untouched.
 
+The transform loads from `@real-enums/warp-drive/legacy`, which imports nothing from WarpDrive at
+runtime. An app on ember-data 5.8 can have a second `@warp-drive/core` installed (a 5.9 peer), and
+WarpDrive refuses to boot when two copies load. Import `enumTransform` from `/legacy` too.
+
 ## Schema records
 
 Register the enums once, by name, then use the name as a field's `type`. The cache keeps the
