@@ -455,12 +455,13 @@ statusText(OrderState.Returned) // undefined, and no one is told</code></pre>
             <pre><code class="language-typescript">// app/services/store.ts
 import { useRecommendedStore } from '@warp-drive/core'
 import { JSONAPICache } from '@warp-drive/json-api'
-import { enumTransformation } from '@real-enums/warp-drive'
+import { enumTransformations } from '@real-enums/warp-drive'
 
 export default useRecommendedStore({
   cache: JSONAPICache,
   schemas: [OrderSchema],
-  transformations: [enumTransformation(OrderState, 'order-state')],
+  // One name for each enum. Schemas stay JSON, so fields name the enum.
+  transformations: enumTransformations({ 'order-state': OrderState }),
 })
 
 // app/schemas/order.ts
@@ -474,16 +475,14 @@ export const OrderSchema = withDefaults({
           </article>
           <article>
             <header>Legacy Models</header>
-            <pre><code class="language-typescript">// app/transforms/order-state.ts
-import { enumTransform } from '@real-enums/warp-drive'
-export default enumTransform(OrderState)
-
-// app/models/order.ts
+            <pre><code class="language-typescript">// app/models/order.ts: no transform file. The package adds
+// `transform:enum` to every Ember app.
 import Model, { attr } from '@warp-drive/legacy/model'
+import type { EnumTransform } from '@real-enums/warp-drive'
 
 export default class Order extends Model {
   @attr declare customer: string
-  @attr('order-state') declare state: OrderState
+  @attr&lt;EnumTransform&gt;('enum', { enum: OrderState }) declare state: OrderState
 }</code></pre>
             <p>
               <small
