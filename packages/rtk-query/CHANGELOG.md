@@ -1,5 +1,11 @@
 # @real-enums/rtk-query
 
+## 2.2.1
+
+### Patch Changes
+
+- @real-enums/core@2.2.1
+
 ## 2.2.0
 
 ### Patch Changes
