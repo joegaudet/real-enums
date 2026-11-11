@@ -87,13 +87,14 @@ interpolate as it, and `JSON.stringify` writes it.
 | Member              | What it does                                                                                                           |
 | ------------------- | ---------------------------------------------------------------------------------------------------------------------- |
 | `value`             | The raw string.                                                                                                        |
-| `label`             | The value with its first letter capitalized: `'on_hold'` → `'On_hold'`. Override it.                                   |
+| `label`             | The value with its first letter capitalized: `'on_hold'` → `'On_hold'`. Override it, or translate it (below).          |
 | `id`                | The instance itself, for `<option value={{state.id}}>` in templates. In JSX, where props want a `string`, use `value`. |
 | `Cls.values`        | Every static instance, in declaration order.                                                                           |
 | `Cls.valueFor(raw)` | The instance for a raw value, or `undefined`. Passing an instance returns it.                                          |
 | `Cls.codec()`       | `{ parse, serialize }` for adapters (below).                                                                           |
 | `Cls.of(value)`     | Declares a member. The same instance `new` makes, typed as that member alone, which `match` needs.                     |
 | `Cls.match(value)`  | A match over the members that the compiler checks for exhaustiveness (below).                                          |
+| `static i18n`       | Opts the enum into translated labels: `static i18n = 'priority'` (below).                                              |
 
 `values` is a getter so templates can read it, and TypeScript cannot give a static getter a
 per-subclass type, so it is `any[]`. Annotate where it matters:
@@ -206,6 +207,42 @@ other than one of the enum's values, or an instance, is an issue.
 realEnum(OrderState)['~standard'].validate('pending') // { value: OrderState.Pending }
 realEnum(OrderState)['~standard'].validate('nope') // { issues: [{ message: 'Expected one of: pending, shipped, delivered' }] }
 ```
+
+### Translating labels: `setTranslator`, `messagesFor`
+
+`label` is shown in UIs, so it can be translated. Give the enum a key, and set a translator
+once at startup:
+
+```ts
+import { Enum, messagesFor, setTranslator } from '@real-enums/core'
+
+class Priority extends Enum {
+  static i18n = 'priority'
+
+  static Low = Priority.of('low')
+  static High = Priority.of('high')
+}
+
+setTranslator(translator) // any { locale, t(message) }
+Priority.High.label // translator.t({ id: 'priority.high', message: 'High', context: 'priority' })
+setTranslator(undefined) // back to English
+```
+
+- The key is explicit because minifiers rename classes. Each label's id is `<key>.<value>`, its
+  gettext msgid is the English label, and its context is the key, so `Pending` in two enums
+  can be translated differently.
+- An enum without `static i18n`, or one that overrides `label`, keeps its English label and
+  never calls the translator. With no translator set, nothing changes.
+- `messagesFor(Priority)` returns every member's message, in English, for a catalog:
+  `msgid`'s CLI builds a `.pot` from them. Since the messages come from your enums, not from
+  real-enums, export them from your own module. It throws for an enum with no key.
+- `label` calls the translator on every read. In Ember, make the translator's `locale`
+  tracked and labels re-render when it changes. `setTranslator` itself is not tracked: set it
+  before first render.
+
+`Message` and `Translator` follow the contract shared by msgid and Joe's other libraries
+(ember-joinery, ember-formwright), so one adapter (gettext, i18next, FormatJS, Lingui) serves
+them all. real-enums declares the types itself and has no i18n dependency.
 
 ## Upgrading from 1.x
 
