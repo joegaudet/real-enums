@@ -20,6 +20,64 @@ export interface EnumCodec<T extends Enum> {
 // The values each class has declared with `of`.
 const declared = new WeakMap<object, Set<string>>()
 
+/**
+ * A translatable string, per the msgid contract shared by Joe's libraries. Declared here
+ * structurally so real-enums needs no i18n dependency.
+ */
+export interface Message {
+  /** Stable key: `<i18n key>.<value>`, e.g. `orderState.pending`. */
+  id: string
+  /** English text, and the gettext msgid. */
+  message: string
+  /** English plural, and the gettext msgid_plural. Enum labels never set it. */
+  plural?: string
+  /** gettext msgctxt: the enum's key, so equal labels in different enums stay apart. */
+  context?: string
+  /** A note for translators. */
+  description?: string
+}
+
+/** Translates a {@link Message}. Any msgid adapter, or your own object, fits. */
+export interface Translator {
+  /** BCP 47 locale. In Ember, make it tracked so a locale change re-renders. */
+  readonly locale: string
+  /** The translated string; falls back to English when it has none. */
+  t(message: Message, values?: Record<string, unknown>): string
+}
+
+let translator: Translator | undefined
+
+/** Sets the translator every keyed enum's `label` uses; `undefined` restores English. */
+export function setTranslator(next: Translator | undefined): void {
+  translator = next
+}
+
+function english(value: string): string {
+  return value.charAt(0).toUpperCase() + value.slice(1).toLowerCase()
+}
+
+/**
+ * The key that opts an enum into translated labels: `static i18n = 'orderState'` gives ids
+ * `orderState.<value>`. Explicit because minifiers rename classes; read structurally so a
+ * subclass needs no `override`.
+ */
+const keyOf = (cls: object) => (cls as { i18n?: string }).i18n
+
+function messageOf(key: string, value: string): Message {
+  return { id: `${key}.${value}`, message: english(value), context: key }
+}
+
+/**
+ * Every member's label as a {@link Message}, in declaration order and in English, for a
+ * catalog (msgid's CLI builds a .pot from them). Throws for an enum with no `static i18n`,
+ * which would otherwise drop out of the catalog silently.
+ */
+export function messagesFor(cls: EnumClass): Message[] {
+  const key = keyOf(cls)
+  if (!key) throw new Error(`${(cls as { name?: string }).name} has no static i18n key`)
+  return cls.values.map((member: Enum) => messageOf(key, member.value))
+}
+
 export class Enum extends String {
   readonly value: string
 
@@ -36,8 +94,14 @@ export class Enum extends String {
     return this
   }
 
+  /**
+   * The value with its first letter capitalized, or, once the class has a `static i18n` key
+   * and a translator is set, its translation. Read on every access (never cached), so a
+   * tracked `locale` keeps it reactive in Ember.
+   */
   get label(): string {
-    return this.value.charAt(0).toUpperCase() + this.value.slice(1).toLowerCase()
+    const key = keyOf(this.constructor)
+    return key && translator ? translator.t(messageOf(key, this.value)) : english(this.value)
   }
 
   /**

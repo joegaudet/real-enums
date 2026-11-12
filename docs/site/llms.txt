@@ -35,6 +35,10 @@ data-layer adapters are `@real-enums/warp-drive`, `@real-enums/tanstack-query`,
    file for each enum. For WarpDrive schema records, register the enums once with
    `transformations: enumTransformations({ 'order-state': OrderState })` and give the field
    `type: 'order-state'`; schemas stay JSON, so never put the class in a field's options.
+10. To translate labels, give the enum `static i18n = 'orderState'` and call
+    `setTranslator(translator)` once at startup. Do not override `label` with a translation
+    lookup, and never derive the key from the class name (minifiers rename classes). List an
+    enum's messages for a catalog with `messagesFor(Cls)`.
 
 ## Example
 
