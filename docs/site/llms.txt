@@ -107,3 +107,10 @@ In Ember apps, which compile legacy decorators, predicates are written
 - [Adapter setup](https://joegaudet.com/real-enums/#ember): Ember and React data layers
 - [Examples](https://github.com/joegaudet/real-enums/tree/main/examples): one app per data
   layer
+
+## Related
+
+- [Formwright](https://joegaudet.com/ember-formwright/): forms for Ember;
+  `@ember-formwright/real-enums` takes enum classes as select and radio options
+- [Joinery](https://joegaudet.com/ember-joinery/): shadcn/ui for Ember, with Formwright fields
+- [harnessed](https://joegaudet.com/harnessed/): test harnesses that run under any test runner
