@@ -64,6 +64,7 @@
           <ul>
             <li><a href="#data-layers">Data layers</a></li>
             <li><a href="#validation">Validation</a></li>
+            <li><a href="#i18n">Translating labels</a></li>
             <li><a href="#agents">For AI agents</a></li>
           </ul>
           <p class="eyebrow">Reference</p>
@@ -354,6 +355,36 @@ realEnum(OrderState)['~standard'].validate('pending') // { value: OrderState.Pen
 realEnum(OrderState)['~standard'].validate('nope') // { issues: [...] }</code></pre>
       </section>
 
+      <section id="i18n">
+        <p class="eyebrow">Going further</p>
+        <h2>Translating labels</h2>
+        <p>
+          Give an enum a <code>static i18n</code> key and set a translator once: its labels go
+          through it, with the id <code>&lt;key&gt;.&lt;value&gt;</code>, the English label as the
+          gettext msgid and the key as context. The key is explicit because minifiers rename
+          classes. An enum without one, or one that overrides <code>label</code>, stays English.
+        </p>
+        <pre><code class="language-typescript">import { Enum, messagesFor, setTranslator } from '@real-enums/core'
+
+class Priority extends Enum {
+  static i18n = 'priority'
+
+  static Low = Priority.of('low')
+  static High = Priority.of('high')
+}
+
+setTranslator(translator) // any { locale, t(message) }
+Priority.High.label // translator.t({ id: 'priority.high', message: 'High', context: 'priority' })
+
+// For a catalog: msgid's CLI builds a .pot from these.
+export const messages = messagesFor(Priority)</code></pre>
+        <p>
+          <code>label</code> calls the translator on every read, so in Ember a tracked
+          <code>locale</code> re-renders it. The types follow the contract msgid shares with
+          ember-joinery and ember-formwright; real-enums has no i18n dependency.
+        </p>
+      </section>
+
       <section id="agents">
         <p class="eyebrow">Going further</p>
         <h2>For AI agents</h2>
@@ -445,6 +476,16 @@ realEnum(OrderState)['~standard'].validate('nope') // { issues: [...] }</code></
               <tr>
                 <th scope="row"><code>realEnum(Cls)</code></th>
                 <td>A strict Standard Schema v1 validator.</td>
+              </tr>
+              <tr>
+                <th scope="row">
+                  <code>static i18n</code>, <code>setTranslator(t)</code>,
+                  <code>messagesFor(Cls)</code>
+                </th>
+                <td>
+                  Translated labels: a key opts the enum in, the translator translates, and
+                  <code>messagesFor</code> lists the messages for a catalog.
+                </td>
               </tr>
             </tbody>
           </table>
