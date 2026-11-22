@@ -1,5 +1,11 @@
 # @real-enums/core
 
+## 2.3.0
+
+### Minor Changes
+
+- adaa5f2: Translatable labels. An enum with `static i18n = 'orderState'` sends its `label` through the translator set with `setTranslator(translator)` (id `orderState.<value>`, the English label as msgid, the key as context); `messagesFor(Cls)` lists its messages for a catalog. Enums without a key, and apps that set no translator, are unchanged.
+
 ## 2.2.1
 
 No changes in this release.
