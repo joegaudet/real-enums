@@ -446,7 +446,10 @@ statusText(OrderState.Returned) // undefined, and no one is told</code></pre>
           <a href="https://joegaudet.com/ember-formwright/">Formwright</a> takes enum classes as
           select options through <code>@ember-formwright/real-enums</code>, and
           <a href="https://joegaudet.com/ember-joinery/">Joinery</a> (shadcn/ui for Ember) renders
-          those fields with its own selects and radio groups.
+          those fields with its own selects and radio groups. Modelling behaviour?
+          <a href="https://joegaudet.com/switchyard/">switchyard</a>'s statecharts use real enums as
+          their states: <code>class FetchState extends State</code>, and <code>@is()</code>,
+          <code>match()</code> and labels work on <code>machine.state</code>.
         </p>
         <div class="install-block">
           <pre><code class="language-bash">npm i @real-enums/core @real-enums/warp-drive</code></pre>
@@ -808,7 +811,8 @@ const schema = realEnum(OrderState)</code></pre>
           <a href="https://joegaudet.com/harnessed/">harnessed</a> ·
           <a href="https://joegaudet.com/real-enums/" aria-current="page">real-enums</a> ·
           <a href="https://joegaudet.com/ember-formwright/">Formwright</a> ·
-          <a href="https://joegaudet.com/ember-joinery/">Joinery</a>
+          <a href="https://joegaudet.com/ember-joinery/">Joinery</a> ·
+          <a href="https://joegaudet.com/switchyard/">switchyard</a>
         </small>
       </p>
     </footer>
