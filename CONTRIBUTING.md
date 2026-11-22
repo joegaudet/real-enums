@@ -76,10 +76,21 @@ site in the same PR**:
   `docs/social-card.html` and re-render `docs/site/social-card.png` with the command in its
   header comment; `docs.test.ts` checks the meta tags and the image size.
 
+The **API reference** at `/real-enums/api/` is the one generated part: TypeDoc builds it from
+the packages' TSDoc (`pnpm docs:api`, after `pnpm build`) into `docs/api/`, styled by
+`docs/api.css` and `scripts/typedoc-site.mjs`, with `docs/api/llms-full.txt` beside it. Pages
+deploys it from the latest release tag's sources, after each release. Every warning fails
+`pnpm test`: an exported declaration without a doc comment, a broken `{@link}`, or an exported
+signature that names a type the package doesn't export. If that type is meant to stay private,
+list it in the package's `typedoc.json` `intentionallyNotExported`.
+
 To preview:
 
 ```bash
 python3 -m http.server 8766 --directory docs/site
+# With the API reference, assembled the way Pages deploys it:
+pnpm build && pnpm docs:api && rm -rf _site && cp -R docs/site _site && cp -R docs/api _site/api
+python3 -m http.server 8766 --directory _site
 ```
 
 ## Releasing

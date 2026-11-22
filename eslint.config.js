@@ -10,6 +10,8 @@ export default tseslint.config(
       // Standalone StackBlitz apps, each with its own tooling.
       'examples/**',
       'docs/**',
+      // The site assembled for a local preview (CONTRIBUTING.md, The website).
+      '_site/**',
     ],
   },
   js.configs.recommended,

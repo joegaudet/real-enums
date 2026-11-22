@@ -51,13 +51,17 @@ export class EnumTransform {
 
   // The array overloads come first: ember-data's typed `@attr<EnumTransform>` reads the last
   // signature, which has to be a single value for it to accept the options.
+  /** Each raw value from the payload as the enum's member; an unknown one is `undefined`. */
   deserialize(serialized: Raw[], options: EnumAttrOptions): (Enum | undefined)[]
+  /** The raw value from the payload as the enum's member; an unknown one is `undefined`. */
   deserialize(serialized: Raw, options: EnumAttrOptions): Enum | undefined
   deserialize(serialized: Raw | Raw[], options: EnumAttrOptions) {
     return codecFromOptions(options).parse(serialized)
   }
 
+  /** Each member back to its raw value for the payload. */
   serialize(deserialized: (Enum | string)[], options: EnumAttrOptions): (string | null)[]
+  /** The member back to its raw value for the payload; `null` for a missing one. */
   serialize(deserialized: Enum | string | null | undefined, options: EnumAttrOptions): string | null
   serialize(
     deserialized: Enum | string | null | undefined | (Enum | string)[],
@@ -66,6 +70,7 @@ export class EnumTransform {
     return codecFromOptions(options).serialize(deserialized as Enum)
   }
 
+  /** ember-data instantiates transforms through `create`. */
   static create() {
     return new this()
   }

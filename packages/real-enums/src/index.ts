@@ -15,6 +15,7 @@ export type EnumClass<T extends Enum = Enum> = { prototype: T } & Pick<
 export interface EnumCodec<T extends Enum> {
   /** Lenient: an unknown or missing value becomes `undefined` rather than throwing. */
   parse(raw: string | T | null | undefined): T | undefined
+  /** The member's raw value; `null` for a missing one. */
   serialize(value: T | string | null | undefined): string | null
 }
 
@@ -79,7 +80,13 @@ export function messagesFor(cls: EnumClass): Message[] {
   return cls.values.map((member: Enum) => messageOf(key, member.value))
 }
 
+/**
+ * The base class for an enum: extend it and declare each member as `static Name = Cls.of('value')`.
+ * A member is a `String` whose value is the raw wire value, so it compares, serializes and
+ * renders as that string, while its getters carry the label, the CSS class and anything else.
+ */
 export class Enum extends String {
+  /** The raw value this member was declared with, as the API sends it. */
   readonly value: string
 
   constructor(value: string) {
@@ -91,6 +98,7 @@ export class Enum extends String {
     return this.value
   }
 
+  /** The member itself, for `<option value={{state.id}}>` in templates. In JSX, use `value`. */
   get id(): this {
     return this
   }
@@ -148,6 +156,10 @@ export class Enum extends String {
     return matcher((this as { name?: string }).name ?? 'Enum', value) as MatchOf<T, Members<C, T>>
   }
 
+  /**
+   * Converts between raw values and members, leniently: an unknown or missing value parses
+   * to `undefined`. The data-layer adapters are built on it.
+   */
   static codec<T extends Enum>(this: EnumClass<T>): EnumCodec<T> {
     return {
       parse: raw => (raw == null ? undefined : this.valueFor(raw)),
