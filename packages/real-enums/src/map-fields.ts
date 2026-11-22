@@ -1,3 +1,4 @@
+import { isObject } from '@sindresorhus/is'
 import type { EnumClass } from './index.js'
 
 /**
@@ -23,7 +24,7 @@ export function mapFields<T = unknown>(data: unknown, map: FieldMap): T {
 function mapAt(value: unknown, path: string[], cls: EnumClass): unknown {
   if (Array.isArray(value)) return value.map(item => mapAt(item, path, cls))
   if (path.length === 0) return value == null ? value : cls.valueFor(value as string)
-  if (value == null || typeof value !== 'object') return value
+  if (!isObject(value)) return value
   const [head, ...rest] = path as [string, ...string[]]
   if (!(head in value)) return value
   return { ...value, [head]: mapAt((value as Record<string, unknown>)[head], rest, cls) }

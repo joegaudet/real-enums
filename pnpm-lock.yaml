@@ -537,7 +537,11 @@ importers:
         specifier: ^7.8.2
         version: 7.8.2
 
-  packages/real-enums: {}
+  packages/real-enums:
+    dependencies:
+      '@sindresorhus/is':
+        specifier: ^8.1.0
+        version: 8.1.0
 
   packages/rtk-query:
     devDependencies:
@@ -2376,6 +2380,10 @@ packages:
 
   '@simple-dom/interface@1.4.0':
     resolution: {integrity: sha512-l5qumKFWU0S+4ZzMaLXFU8tQZsicHEMEyAxI5kDFGhJsRqDwe0a7/iPA/GdxlGyDKseQQAgIz5kzU7eXTrlSpA==}
+
+  '@sindresorhus/is@8.1.0':
+    resolution: {integrity: sha512-2SX/1jW6CIMAiebvVv5ZInoCEuWQmMyBoJXXGC6Vjakjp/fpxP5eHs7/V6WKuPEIbuK06+VpjH+vjLQhr98rDQ==}
+    engines: {node: '>=22'}
 
   '@sindresorhus/merge-streams@4.0.0':
     resolution: {integrity: sha512-tlqY9xq5ukxTUZBmoOp+m61cqwQD5pHJtFY3Mn8CA8ps6yghLH/Hw8UPdqg4OLmFW3IFlcXnQNmo/dh8HzXYIQ==}
@@ -8206,6 +8214,8 @@ snapshots:
   '@shikijs/vscode-textmate@10.1.0': {}
 
   '@simple-dom/interface@1.4.0': {}
+
+  '@sindresorhus/is@8.1.0': {}
 
   '@sindresorhus/merge-streams@4.0.0': {}
 

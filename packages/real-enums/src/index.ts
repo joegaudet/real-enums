@@ -1,3 +1,4 @@
+import { isObject } from '@sindresorhus/is'
 import { matcher, type MatchOf, type Members } from './match.js'
 
 /**
@@ -184,7 +185,7 @@ export interface PredicateDecorator {
 
 function predicate(prefix: 'is' | 'isNot', matches: boolean): PredicateDecorator {
   return ((_target: unknown, contextOrKey: string | ClassAccessorDecoratorContext) => {
-    const standard = typeof contextOrKey === 'object'
+    const standard = isObject(contextOrKey)
     const key = String(standard ? contextOrKey.name : contextOrKey).slice(prefix.length)
     function get(this: Enum) {
       const ctor = this.constructor as unknown as Record<string, unknown>

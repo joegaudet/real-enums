@@ -1,3 +1,4 @@
+import { isString } from '@sindresorhus/is'
 import type { Enum, EnumClass } from './index.js'
 
 /**
@@ -32,12 +33,11 @@ export function realEnum<T extends Enum>(cls: EnumClass<T>): StandardSchemaV1<st
       version: 1,
       vendor: 'real-enums',
       validate(value) {
-        const found =
-          typeof value === 'string'
-            ? (cls.valueFor(value) as T | undefined)
-            : cls.values.includes(value)
-              ? (value as T)
-              : undefined
+        const found = isString(value)
+          ? (cls.valueFor(value) as T | undefined)
+          : cls.values.includes(value)
+            ? (value as T)
+            : undefined
         if (found) return { value: found }
         return { issues: [{ message: `Expected one of: ${cls.values.join(', ')}` }] }
       },
