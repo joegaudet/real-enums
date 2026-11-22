@@ -27,6 +27,18 @@ export default tseslint.config(
     },
   },
   {
+    files: ['packages/*/src/**/*.{ts,gts}'],
+    rules: {
+      'no-restricted-syntax': [
+        'error',
+        {
+          selector: "BinaryExpression > UnaryExpression[operator='typeof']",
+          message: 'Check types with @sindresorhus/is (isString, isFunction, …), not typeof.',
+        },
+      ],
+    },
+  },
+  {
     // Tests and build tooling are outside the publishable projects on purpose, so type-aware
     // linting is pointed at a project that includes them.
     files: [
