@@ -1,5 +1,12 @@
 # @real-enums/urql
 
+## 2.3.0
+
+### Patch Changes
+
+- Updated dependencies [adaa5f2]
+  - @real-enums/core@2.3.0
+
 ## 2.2.1
 
 ### Patch Changes
