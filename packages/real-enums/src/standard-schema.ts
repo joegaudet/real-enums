@@ -8,6 +8,7 @@ export interface StandardSchemaV1<Input = unknown, Output = Input> {
   readonly '~standard': {
     readonly version: 1
     readonly vendor: string
+    /** Checks one value: a known enum value or member succeeds, anything else is an issue. */
     readonly validate: (
       value: unknown,
     ) => StandardSchemaResult<Output> | Promise<StandardSchemaResult<Output>>
@@ -15,6 +16,7 @@ export interface StandardSchemaV1<Input = unknown, Output = Input> {
   }
 }
 
+/** What `validate` returns: the parsed `value`, or the `issues` that stopped it. */
 export type StandardSchemaResult<Output> =
   | { readonly value: Output; readonly issues?: undefined }
   | { readonly issues: ReadonlyArray<{ readonly message: string }> }

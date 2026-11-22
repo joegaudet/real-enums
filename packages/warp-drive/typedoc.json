@@ -1,0 +1,8 @@
+{
+  "entryPoints": ["src/index.ts", "src/legacy.ts"],
+  "intentionallyNotExported": [
+    "src/codec.ts:Raw",
+    "src/index.ts:Hydrated",
+    "src/legacy.ts:EnumTransform"
+  ]
+}

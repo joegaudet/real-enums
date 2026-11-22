@@ -102,6 +102,12 @@ In Ember apps, which compile legacy decorators, predicates are written
 
 - [Guide](https://joegaudet.com/real-enums/guide/): declaring enums, predicates, exhaustive
   matching, data layers, validation and the API
+- [API reference](https://joegaudet.com/real-enums/api/): every export of every package, from
+  the latest release
+- [llms-full.txt](https://joegaudet.com/real-enums/api/llms-full.txt): this file followed by the
+  whole API reference as Markdown
+- [api.json](https://joegaudet.com/real-enums/api/api.json): the API reference as TypeDoc's JSON
+  model, for tools
 - [Package README](https://github.com/joegaudet/real-enums/tree/main/packages/real-enums#readme):
   the full API, including upgrading from 1.x
 - [Adapter setup](https://joegaudet.com/real-enums/#ember): Ember and React data layers

@@ -18,7 +18,8 @@
     "test": "vitest run && node --test scripts/*.test.mjs",
     "test:examples": "pnpm -r --filter './examples/*' run test",
     "clean": "rm -rf packages/*/dist packages/*/*.tsbuildinfo",
-    "release": "pnpm build && node scripts/publish.mjs"
+    "release": "pnpm build && node scripts/publish.mjs",
+    "docs:api": "typedoc && node scripts/llms-full.mjs"
   },
   "devDependencies": {
     "@changesets/cli": "^3.0.3",
@@ -29,6 +30,8 @@
     "jsdom": "^29.1.1",
     "prettier": "^3.9.10",
     "tsup": "^8.5.1",
+    "typedoc": "^0.28.20",
+    "typedoc-plugin-markdown": "^4.14.1",
     "typescript": "^6.0.3",
     "typescript-eslint": "^8.71.2",
     "vite": "^8.3.4",

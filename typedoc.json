@@ -1,0 +1,63 @@
+{
+  "$schema": "https://typedoc.org/schema.json",
+  "name": "real-enums",
+  "entryPointStrategy": "packages",
+  "entryPoints": ["packages/*"],
+  "packageOptions": {
+    "entryPoints": ["src/index.ts"],
+    "validation": {
+      "notExported": true,
+      "invalidLink": true,
+      "notDocumented": true
+    },
+    "requiredToBeDocumented": [
+      "Enum",
+      "Variable",
+      "Function",
+      "Class",
+      "Interface",
+      "TypeAlias",
+      "Method",
+      "Accessor"
+    ]
+  },
+  "outputs": [
+    {
+      "name": "html",
+      "path": "docs/api"
+    },
+    {
+      "name": "markdown",
+      "path": "docs/api-md"
+    },
+    {
+      "name": "json",
+      "path": "docs/api/api.json"
+    }
+  ],
+  "plugin": ["typedoc-plugin-markdown", "./scripts/typedoc-site.mjs"],
+  "readme": "none",
+  "hostedBaseUrl": "https://joegaudet.com/real-enums/api/",
+  "customCss": "docs/api.css",
+  "favicon": "docs/site/favicon.svg",
+  "navigationLinks": {
+    "Home": "https://joegaudet.com/real-enums/",
+    "Guide": "https://joegaudet.com/real-enums/guide/",
+    "GitHub": "https://github.com/joegaudet/real-enums"
+  },
+  "excludeInternal": true,
+  "excludePrivate": true,
+  "treatWarningsAsErrors": true,
+  "highlightLanguages": [
+    "bash",
+    "css",
+    "html",
+    "javascript",
+    "json",
+    "jsx",
+    "typescript",
+    "tsx",
+    "handlebars",
+    "glimmer-ts"
+  ]
+}
